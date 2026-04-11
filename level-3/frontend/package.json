@@ -1,0 +1,33 @@
+{
+  "name": "level3-frontend",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite --port 5174",
+    "build": "vite build",
+    "preview": "vite preview --port 5174",
+    "prod": "vite build && vite preview --port 5174"
+  },
+  "dependencies": {
+    "@apollo/client": "^3.8.8",
+    "axios": "^1.6.0",
+    "framer-motion": "^12.38.0",
+    "graphql": "^16.8.1",
+    "graphql-ws": "^6.0.8",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.20.0",
+    "recharts": "^3.8.1",
+    "socket.io-client": "^4.7.4"
+  },
+  "devDependencies": {
+    "@types/react": "^18.2.43",
+    "@types/react-dom": "^18.2.17",
+    "@vitejs/plugin-react": "^4.2.1",
+    "autoprefixer": "^10.4.27",
+    "postcss": "^8.5.9",
+    "tailwindcss": "^4.2.2",
+    "vite": "^5.0.8"
+  }
+}
