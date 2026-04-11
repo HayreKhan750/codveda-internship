@@ -71,7 +71,7 @@ const Users = () => {
     setActionLoading(true)
     try {
       await axios.delete(`${API_URL}/users/${deleteTarget}`)
-      setUsers(users.filter(user => user._id !== deleteTarget))
+      setUsers(users.filter(user => user.id !== deleteTarget))
       setShowDeleteModal(false)
       setDeleteTarget(null)
     } catch (err) {
@@ -108,8 +108,8 @@ const Users = () => {
     
     setActionLoading(true)
     try {
-      const response = await axios.put(`${API_URL}/users/${editTarget._id}`, editForm)
-      setUsers(users.map(user => user._id === editTarget._id ? response.data.user : user))
+      const response = await axios.put(`${API_URL}/users/${editTarget.id}`, editForm)
+      setUsers(users.map(user => user.id === editTarget.id ? response.data.user : user))
       setShowEditModal(false)
       setEditTarget(null)
     } catch (err) {
@@ -226,7 +226,7 @@ const Users = () => {
       ) : (
         <div className="users-grid">
           {users.map((user) => (
-            <div key={user._id} className="user-card">
+            <div key={user.id} className="user-card">
               <div className="user-card-header">
                 <div className="user-avatar">
                   {getInitials(user.name)}
@@ -270,7 +270,7 @@ const Users = () => {
                 </button>
                 <button 
                   className="btn-delete"
-                  onClick={() => handleDeleteClick(user._id)}
+                  onClick={() => handleDeleteClick(user.id)}
                   disabled={actionLoading}
                 >
                   <i className="fas fa-trash"></i>
