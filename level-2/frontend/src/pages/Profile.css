@@ -8,19 +8,33 @@
   display: flex;
   align-items: center;
   gap: 24px;
-  background: var(--bg-card);
+  background: linear-gradient(135deg, var(--bg-card) 0%, rgba(124,58,237,0.08) 100%);
   padding: 32px;
   border-radius: var(--radius-xl);
-  box-shadow: var(--shadow-sm);
+  box-shadow: var(--shadow-md), 0 0 40px rgba(124,58,237,0.1);
   border: 1px solid var(--glass-border);
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(20px);
+  position: relative;
+  overflow: hidden;
+}
+
+.profile-header::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -10%;
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(circle, rgba(124,58,237,0.15) 0%, transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
 }
 
 .profile-avatar-large {
   width: 100px;
   height: 100px;
   border-radius: 50%;
-  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
   color: white;
   display: flex;
   align-items: center;
@@ -28,7 +42,18 @@
   font-weight: 700;
   font-size: 2.5rem;
   flex-shrink: 0;
-  box-shadow: 0 8px 30px rgba(124,58,237,0.3);
+  box-shadow: 0 8px 30px rgba(124,58,237,0.4), 0 0 0 4px rgba(124,58,237,0.1);
+  position: relative;
+  z-index: 1;
+}
+
+.profile-avatar-large::after {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, rgba(124,58,237,0.3), transparent);
+  z-index: -1;
 }
 
 .profile-title h2 {
@@ -87,12 +112,18 @@
 }
 
 .profile-form-container {
-  background: var(--bg-card);
+  background: linear-gradient(135deg, var(--bg-card) 0%, rgba(124,58,237,0.05) 100%);
   border-radius: var(--radius-xl);
   padding: 32px;
-  box-shadow: var(--shadow-sm);
+  box-shadow: var(--shadow-md);
   border: 1px solid var(--glass-border);
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(20px);
+  transition: box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.profile-form-container:hover {
+  box-shadow: var(--shadow-lg), 0 0 30px rgba(124,58,237,0.08);
+  border-color: var(--border-hover);
 }
 
 .form-header {
@@ -121,17 +152,21 @@
   align-items: center;
   gap: 8px;
   padding: 10px 20px;
-  background: rgba(124,58,237,0.1);
+  background: linear-gradient(135deg, rgba(124,58,237,0.15), rgba(124,58,237,0.05));
   color: var(--primary-light);
-  border: 1px solid rgba(124,58,237,0.2);
+  border: 1px solid rgba(124,58,237,0.3);
   border-radius: var(--radius-md);
   font-weight: 500;
   cursor: pointer;
   transition: var(--transition);
+  box-shadow: 0 4px 15px rgba(124,58,237,0.1);
 }
 
 .btn-edit-profile:hover {
-  background: rgba(124,58,237,0.2);
+  background: linear-gradient(135deg, rgba(124,58,237,0.25), rgba(124,58,237,0.1));
+  border-color: rgba(124,58,237,0.5);
+  box-shadow: 0 6px 20px rgba(124,58,237,0.2);
+  transform: translateY(-2px);
 }
 
 .form-grid {
@@ -169,6 +204,7 @@
   transition: var(--transition);
   background: var(--bg-secondary);
   color: var(--text-primary);
+  box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
 }
 
 .form-group input:focus,
@@ -176,7 +212,7 @@
   outline: none;
   border-color: var(--primary);
   background: var(--bg-tertiary);
-  box-shadow: 0 0 0 3px rgba(124,58,237,0.1);
+  box-shadow: 0 0 0 3px rgba(124,58,237,0.15), inset 0 2px 4px rgba(0,0,0,0.05);
 }
 
 .form-group input:disabled,
@@ -258,12 +294,18 @@
 }
 
 .account-info {
-  background: var(--bg-card);
+  background: linear-gradient(135deg, var(--bg-card) 0%, rgba(16,185,129,0.03) 100%);
   border-radius: var(--radius-xl);
   padding: 32px;
-  box-shadow: var(--shadow-sm);
+  box-shadow: var(--shadow-md);
   border: 1px solid var(--glass-border);
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(20px);
+  transition: box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.account-info:hover {
+  box-shadow: var(--shadow-lg), 0 0 30px rgba(16,185,129,0.05);
+  border-color: var(--border-hover);
 }
 
 .account-info h3 {
@@ -290,13 +332,17 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding-bottom: 16px;
-  border-bottom: 1px solid var(--glass-border);
+  padding: 16px;
+  background: var(--bg-secondary);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--glass-border);
+  transition: background 0.3s ease, border-color 0.3s ease, transform 0.2s ease;
 }
 
-.info-row:last-child {
-  border-bottom: none;
-  padding-bottom: 0;
+.info-row:hover {
+  background: var(--bg-tertiary);
+  border-color: var(--border-hover);
+  transform: translateX(4px);
 }
 
 .info-row .label {

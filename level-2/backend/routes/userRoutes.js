@@ -41,13 +41,13 @@ router.get('/', protect, adminOnly, async (req, res) => {
     const skip = (pageNum - 1) * limitNum;
 
     // Execute query
-    const users = await find(query)
+    const users = await User.find(query)
       .select('-password')
       .sort(sort)
       .skip(skip)
       .limit(limitNum);
 
-    const total = await countDocuments(query);
+    const total = await User.countDocuments(query);
 
     res.json({
       success: true,
@@ -70,7 +70,7 @@ router.get('/', protect, adminOnly, async (req, res) => {
 // @access  Private
 router.get('/profile', protect, async (req, res) => {
   try {
-    const user = await findById(req.user._id).select('-password');
+    const user = await User.findById(req.user._id).select('-password');
     res.json({
       success: true,
       user
@@ -86,7 +86,7 @@ router.get('/profile', protect, async (req, res) => {
 // @access  Private/Admin
 router.get('/:id', protect, adminOnly, async (req, res) => {
   try {
-    const user = await findById(req.params.id).select('-password');
+    const user = await User.findById(req.params.id).select('-password');
     
     if (!user) {
       return res.status(404).json({ error: 'User not found' });
@@ -114,7 +114,7 @@ router.put('/:id', protect, adminOnly, [
   try {
     const { name, email, age, department, role, isActive } = req.body;
     
-    const user = await findById(req.params.id);
+    const user = await User.findById(req.params.id);
     
     if (!user) {
       return res.status(404).json({ error: 'User not found' });
@@ -122,7 +122,7 @@ router.put('/:id', protect, adminOnly, [
 
     // Check email uniqueness if changing email
     if (email && email !== user.email) {
-      const existingUser = await findOne({ email: email.toLowerCase() });
+      const existingUser = await User.findOne({ email: email.toLowerCase() });
       if (existingUser) {
         return res.status(400).json({ error: 'Email already in use' });
       }
@@ -154,7 +154,7 @@ router.put('/:id', protect, adminOnly, [
 // @access  Private/Admin
 router.delete('/:id', protect, adminOnly, async (req, res) => {
   try {
-    const user = await findById(req.params.id);
+    const user = await User.findById(req.params.id);
     
     if (!user) {
       return res.status(404).json({ error: 'User not found' });
@@ -179,20 +179,20 @@ router.delete('/:id', protect, adminOnly, async (req, res) => {
 // @access  Private/Admin
 router.get('/stats/overview', protect, adminOnly, async (req, res) => {
   try {
-    const totalUsers = await countDocuments({ isActive: true });
-    const newToday = await countDocuments({
+    const totalUsers = await User.countDocuments({ isActive: true });
+    const newToday = await User.countDocuments({
       isActive: true,
       createdAt: { $gte: new Date(Date.now() - 24 * 60 * 60 * 1000) }
     });
     
     // Department distribution
-    const departmentStats = await aggregate([
+    const departmentStats = await User.aggregate([
       { $match: { isActive: true } },
       { $group: { _id: '$department', count: { $sum: 1 } } }
     ]);
 
     // Role distribution
-    const roleStats = await aggregate([
+    const roleStats = await User.aggregate([
       { $match: { isActive: true } },
       { $group: { _id: '$role', count: { $sum: 1 } } }
     ]);

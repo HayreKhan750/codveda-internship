@@ -579,7 +579,8 @@
 /* Profile Completion Card */
 .profile-completion-card {
   text-align: center;
-  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  background: var(--bg-card);
+  border: 1px solid var(--glass-border);
 }
 
 .completion-header {
@@ -592,7 +593,7 @@
 .completion-percentage {
   font-size: 1.5rem;
   font-weight: 700;
-  color: #667eea;
+  color: var(--primary-light);
 }
 
 .completion-progress {
@@ -615,7 +616,7 @@
 
 .progress-ring-bg {
   fill: none;
-  stroke: #e5e7eb;
+  stroke: var(--glass-border);
   stroke-width: 8;
 }
 
@@ -635,12 +636,12 @@
   transform: translate(-50%, -50%);
   font-size: 2rem;
   font-weight: 700;
-  color: #667eea;
+  color: var(--primary-light);
 }
 
 .completion-message {
   font-size: 0.95rem;
-  color: #64748b;
+  color: var(--text-muted);
   margin-top: 20px;
 }
 
@@ -652,19 +653,22 @@
 }
 
 .user-stat-card {
-  background: white;
-  border-radius: 16px;
+  background: var(--bg-card);
+  border-radius: var(--radius-lg);
   padding: 24px;
   display: flex;
   align-items: center;
   gap: 16px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--glass-border);
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+  backdrop-filter: blur(10px);
 }
 
 .user-stat-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+  box-shadow: var(--shadow-md);
+  border-color: var(--border-hover);
 }
 
 .user-stat-icon {
@@ -695,12 +699,12 @@
 .user-stat-value {
   font-size: 1.1rem;
   font-weight: 600;
-  color: #1e293b;
+  color: var(--text-primary);
 }
 
 .user-stat-label {
   font-size: 0.85rem;
-  color: #64748b;
+  color: var(--text-muted);
 }
 
 /* Profile Grid */
@@ -715,13 +719,15 @@
   align-items: center;
   gap: 16px;
   padding: 16px;
-  background: #f8fafc;
-  border-radius: 12px;
-  transition: background 0.3s ease;
+  background: var(--bg-secondary);
+  border-radius: var(--radius-md);
+  transition: background 0.3s ease, border-color 0.3s ease;
+  border: 1px solid var(--glass-border);
 }
 
 .profile-item:hover {
-  background: #f1f5f9;
+  background: var(--bg-tertiary);
+  border-color: var(--border-hover);
 }
 
 .profile-item-icon {
@@ -755,14 +761,14 @@
 
 .profile-item-label {
   font-size: 0.8rem;
-  color: #64748b;
+  color: var(--text-muted);
   margin-bottom: 4px;
 }
 
 .profile-item-value {
   font-size: 1rem;
   font-weight: 600;
-  color: #1e293b;
+  color: var(--text-primary);
 }
 
 .role-tag {
@@ -775,13 +781,15 @@
 }
 
 .role-tag.admin {
-  background: #fef3c7;
-  color: #d97706;
+  background: rgba(245,158,11,0.15);
+  color: var(--warning);
+  border: 1px solid rgba(245,158,11,0.3);
 }
 
 .role-tag.user {
-  background: #e0e7ff;
-  color: #4f46e5;
+  background: rgba(124,58,237,0.15);
+  color: var(--primary-light);
+  border: 1px solid rgba(124,58,237,0.3);
 }
 
 .status-tag {
@@ -793,8 +801,9 @@
 }
 
 .status-tag.active {
-  background: #d1fae5;
-  color: #059669;
+  background: rgba(16,185,129,0.15);
+  color: var(--accent);
+  border: 1px solid rgba(16,185,129,0.3);
 }
 
 /* Security Grid */
@@ -878,12 +887,15 @@
 }
 
 .action-btn.secondary {
-  background: #f1f5f9;
-  color: #64748b;
+  background: var(--glass);
+  color: var(--text-secondary);
+  border: 1px solid var(--glass-border);
 }
 
 .action-btn.secondary:hover {
-  background: #e2e8f0;
+  background: var(--glass-hover);
+  border-color: var(--border-hover);
+  color: var(--text-primary);
   transform: translateY(-2px);
 }
 
