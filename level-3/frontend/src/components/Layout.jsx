@@ -11,7 +11,6 @@ const Layout = () => {
   const navigate = useNavigate()
 
   const handleLogout = () => {
-    // Disconnect socket before logout
     socketService.disconnect()
     logout()
     navigate('/login')

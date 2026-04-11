@@ -5,15 +5,12 @@ require('dotenv').config();
 
 const seedData = async () => {
   try {
-    // Connect to MongoDB
     await mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/codveda_level3');
     console.log('Connected to MongoDB');
 
-    // Clear existing users
     await User.deleteMany({});
     console.log('Cleared existing users');
 
-    // Create sample users (passwords will be hashed by the User model pre-save hook)
     const users = [
       {
         name: 'Admin User',
@@ -57,7 +54,6 @@ const seedData = async () => {
       }
     ];
 
-    // Create users individually to trigger pre-save hooks
     for (const userData of users) {
       await User.create(userData);
     }

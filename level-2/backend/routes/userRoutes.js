@@ -4,8 +4,6 @@ const { body, validationResult } = require('express-validator');
 const User = require('../models/User');
 const { protect, adminOnly } = require('../middleware/auth');
 
-
-// Validation middleware
 const validate = (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -14,14 +12,9 @@ const validate = (req, res, next) => {
   next();
 };
 
-// @route   GET /api/users
-// @desc    Get all users (admin only)
-// @access  Private/Admin
 router.get('/', protect, adminOnly, async (req, res) => {
   try {
     const { page = 1, limit = 10, search, department, sort = '-createdAt' } = req.query;
-    
-    // Build query
     const query = { isActive: true };
     
     if (search) {
@@ -35,12 +28,10 @@ router.get('/', protect, adminOnly, async (req, res) => {
       query.department = department;
     }
 
-    // Pagination
     const pageNum = parseInt(page);
     const limitNum = parseInt(limit);
     const skip = (pageNum - 1) * limitNum;
 
-    // Execute query
     const users = await User.find(query)
       .select('-password')
       .sort(sort)
@@ -65,9 +56,6 @@ router.get('/', protect, adminOnly, async (req, res) => {
   }
 });
 
-// @route   GET /api/users/profile
-// @desc    Get user profile
-// @access  Private
 router.get('/profile', protect, async (req, res) => {
   try {
     const user = await User.findById(req.user._id).select('-password');
@@ -81,9 +69,6 @@ router.get('/profile', protect, async (req, res) => {
   }
 });
 
-// @route   GET /api/users/:id
-// @desc    Get single user by ID
-// @access  Private/Admin
 router.get('/:id', protect, adminOnly, async (req, res) => {
   try {
     const user = await User.findById(req.params.id).select('-password');
@@ -102,9 +87,6 @@ router.get('/:id', protect, adminOnly, async (req, res) => {
   }
 });
 
-// @route   PUT /api/users/:id
-// @desc    Update user (admin only)
-// @access  Private/Admin
 router.put('/:id', protect, adminOnly, [
   body('name').optional().trim().notEmpty().withMessage('Name cannot be empty'),
   body('email').optional().isEmail().withMessage('Please enter a valid email'),
@@ -120,7 +102,6 @@ router.put('/:id', protect, adminOnly, [
       return res.status(404).json({ error: 'User not found' });
     }
 
-    // Check email uniqueness if changing email
     if (email && email !== user.email) {
       const existingUser = await User.findOne({ email: email.toLowerCase() });
       if (existingUser) {
@@ -128,7 +109,6 @@ router.put('/:id', protect, adminOnly, [
       }
     }
 
-    // Update fields
     if (name) user.name = name;
     if (email) user.email = email.toLowerCase();
     if (age !== undefined) user.age = age;
@@ -149,9 +129,6 @@ router.put('/:id', protect, adminOnly, [
   }
 });
 
-// @route   DELETE /api/users/:id
-// @desc    Soft delete user (admin only)
-// @access  Private/Admin
 router.delete('/:id', protect, adminOnly, async (req, res) => {
   try {
     const user = await User.findById(req.params.id);
@@ -160,7 +137,6 @@ router.delete('/:id', protect, adminOnly, async (req, res) => {
       return res.status(404).json({ error: 'User not found' });
     }
 
-    // Soft delete - mark as inactive
     user.isActive = false;
     await user.save();
 
@@ -174,9 +150,6 @@ router.delete('/:id', protect, adminOnly, async (req, res) => {
   }
 });
 
-// @route   GET /api/users/stats/overview
-// @desc    Get user statistics
-// @access  Private/Admin
 router.get('/stats/overview', protect, adminOnly, async (req, res) => {
   try {
     const totalUsers = await User.countDocuments({ isActive: true });
@@ -185,13 +158,11 @@ router.get('/stats/overview', protect, adminOnly, async (req, res) => {
       createdAt: { $gte: new Date(Date.now() - 24 * 60 * 60 * 1000) }
     });
     
-    // Department distribution
     const departmentStats = await User.aggregate([
       { $match: { isActive: true } },
       { $group: { _id: '$department', count: { $sum: 1 } } }
     ]);
 
-    // Role distribution
     const roleStats = await User.aggregate([
       { $match: { isActive: true } },
       { $group: { _id: '$role', count: { $sum: 1 } } }

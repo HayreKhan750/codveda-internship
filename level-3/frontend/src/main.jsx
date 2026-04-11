@@ -14,12 +14,10 @@ import { getMainDefinition } from '@apollo/client/utilities'
 import App from './App.jsx'
 import './index.css'
 
-// HTTP link for queries & mutations
 const httpLink = createHttpLink({
   uri: 'http://localhost:5000/graphql',
 })
 
-// Auth header injection
 const authLink = setContext((_, { headers }) => {
   const token = localStorage.getItem('token')
   return {
@@ -30,7 +28,6 @@ const authLink = setContext((_, { headers }) => {
   }
 })
 
-// WebSocket link for subscriptions
 const wsLink = new GraphQLWsLink(
   createClient({
     url: 'ws://localhost:5000/graphql',
@@ -42,7 +39,6 @@ const wsLink = new GraphQLWsLink(
   })
 )
 
-// Split: subscriptions over WS, everything else over HTTP
 const splitLink = split(
   ({ query }) => {
     const def = getMainDefinition(query)

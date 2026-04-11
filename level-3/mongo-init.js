@@ -1,10 +1,6 @@
-// MongoDB initialization script for Level 3
-// This script runs when the MongoDB container starts for the first time
 
-// Switch to the application database
 db = db.getSiblingDB('codveda_level3');
 
-// Create application user
 db.createUser({
   user: 'codveda_user',
   pwd: 'codveda_password',
@@ -16,7 +12,6 @@ db.createUser({
   ]
 });
 
-// Create collections with indexes
 db.createCollection('users');
 db.users.createIndex({ email: 1 }, { unique: true });
 db.users.createIndex({ createdAt: 1 });
@@ -24,20 +19,17 @@ db.users.createIndex({ department: 1 });
 db.users.createIndex({ role: 1 });
 db.users.createIndex({ isActive: 1 });
 
-// Create indexes for messages collection (if implemented)
 db.createCollection('messages');
 db.messages.createIndex({ sender: 1, recipient: 1 });
 db.messages.createIndex({ timestamp: 1 });
 db.messages.createIndex({ sender: 1 });
 db.messages.createIndex({ recipient: 1 });
 
-// Create indexes for notifications collection (if implemented)
 db.createCollection('notifications');
 db.notifications.createIndex({ user: 1, isRead: 1 });
 db.notifications.createIndex({ createdAt: 1 });
 db.notifications.createIndex({ type: 1 });
 
-// Insert initial admin user (password: admin123)
 db.users.insertOne({
   name: 'System Administrator',
   email: 'admin@codveda.com',
@@ -50,7 +42,6 @@ db.users.insertOne({
   updatedAt: new Date()
 });
 
-// Insert sample users for testing
 db.users.insertMany([
   {
     name: 'John Doe',

@@ -1,6 +1,5 @@
 import { gql } from '@apollo/client'
 
-// ── Queries ─────────────────────────────────────────────────────
 export const GET_ME = gql`
   query GetMe {
     me {
@@ -78,7 +77,6 @@ export const GET_USER_STATS = gql`
   }
 `
 
-// ── Mutations ────────────────────────────────────────────────────
 export const SEND_MESSAGE = gql`
   mutation SendMessage($recipientId: ID!, $content: String!) {
     sendMessage(recipientId: $recipientId, content: $content) {
@@ -143,7 +141,6 @@ export const DEACTIVATE_USER = gql`
   }
 `
 
-// ── Subscriptions ─────────────────────────────────────────────────
 export const MESSAGE_SENT = gql`
   subscription MessageSent($userId: ID!) {
     messageSent(userId: $userId) {

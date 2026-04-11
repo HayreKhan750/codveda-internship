@@ -1,11 +1,8 @@
-/* ═══════════════════════════════════════════════════════════════
    Codveda Level-3 — Premium Dark Design System
    Enhanced contrast, no color bleeding, glass morphism
 ═══════════════════════════════════════════════════════════════ */
 
-/* ── CSS Variables ── */
 :root {
-  /* Primary Palette */
   --primary: #8b5cf6;
   --primary-light: #a78bfa;
   --primary-dark: #6d28d9;
@@ -16,7 +13,6 @@
   --warning: #f59e0b;
   --info: #3b82f6;
 
-  /* Background Hierarchy - Deep Navy */
   --bg-base: #0a0a0f;
   --bg-primary: #12121a;
   --bg-secondary: #1a1a25;
@@ -24,19 +20,16 @@
   --bg-card: rgba(26, 26, 37, 0.8);
   --bg-hover: rgba(139, 92, 246, 0.08);
 
-  /* Text Colors - High Contrast */
   --text-primary: #fafafa;
   --text-secondary: #a1a1aa;
   --text-muted: #71717a;
   --text-disabled: #52525b;
 
-  /* Borders */
   --border: rgba(139, 92, 246, 0.15);
   --border-hover: rgba(139, 92, 246, 0.35);
   --border-strong: rgba(139, 92, 246, 0.5);
   --glass-border: rgba(255, 255, 255, 0.08);
 
-  /* Glass & Effects */
   --glass: rgba(255, 255, 255, 0.03);
   --glass-hover: rgba(255, 255, 255, 0.06);
   --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.4);
@@ -45,7 +38,6 @@
   --shadow-glow: 0 0 40px rgba(139, 92, 246, 0.2);
   --shadow-glow-sm: 0 0 20px rgba(139, 92, 246, 0.15);
 
-  /* Spacing */
   --spacing-xs: 4px;
   --spacing-sm: 8px;
   --spacing-md: 16px;
@@ -53,19 +45,16 @@
   --spacing-xl: 32px;
   --spacing-2xl: 48px;
 
-  /* Border Radius */
   --radius-sm: 8px;
   --radius-md: 12px;
   --radius-lg: 16px;
   --radius-xl: 24px;
   --radius-full: 9999px;
 
-  /* Transitions */
   --transition-fast: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
   --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   --transition-slow: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 
-  /* Department Colors */
   --dept-engineering: #8b5cf6;
   --dept-design: #ec4899;
   --dept-marketing: #f59e0b;
@@ -73,7 +62,6 @@
   --dept-hr: #3b82f6;
 }
 
-/* ── Reset & Base ── */
 *, *::before, *::after {
   box-sizing: border-box;
   margin: 0;
@@ -97,7 +85,6 @@ body {
   overflow-x: hidden;
 }
 
-/* Ambient Background Glow */
 body::before {
   content: '';
   position: fixed;
@@ -115,7 +102,6 @@ body::before {
   min-height: 100vh;
 }
 
-/* ── Animations ── */
 @keyframes fadeInUp {
   from { opacity: 0; transform: translateY(20px); }
   to { opacity: 1; transform: translateY(0); }
@@ -169,7 +155,6 @@ body::before {
   100% { opacity: 1; transform: scale(1) translateY(0); }
 }
 
-/* ── Scrollbar ── */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
@@ -189,19 +174,16 @@ body::before {
   background: var(--text-muted);
 }
 
-/* ── Selection ── */
 ::selection {
   background: var(--primary);
   color: white;
 }
 
-/* ── Focus States ── */
 :focus-visible {
   outline: 2px solid var(--primary);
   outline-offset: 2px;
 }
 
-/* ── Links ── */
 a {
   color: var(--primary-light);
   text-decoration: none;
@@ -212,7 +194,6 @@ a:hover {
   color: var(--primary);
 }
 
-/* ── Form Elements ── */
 input, select, textarea, button {
   font-family: inherit;
 }
@@ -221,7 +202,6 @@ input::placeholder, textarea::placeholder {
   color: var(--text-muted);
 }
 
-/* ── Utility Classes ── */
 .sr-only {
   position: absolute;
   width: 1px;
@@ -248,7 +228,6 @@ input::placeholder, textarea::placeholder {
   background-clip: text;
 }
 
-/* ── Loading Spinner ── */
 .spinner {
   width: 40px;
   height: 40px;

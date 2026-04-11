@@ -17,7 +17,6 @@ const Dashboard = () => {
   const [loading, setLoading] = useState(true)
   const [currentTime, setCurrentTime] = useState(new Date())
 
-  // Update time every minute
   useEffect(() => {
     const timer = setInterval(() => setCurrentTime(new Date()), 60000)
     return () => clearInterval(timer)
@@ -76,7 +75,6 @@ const Dashboard = () => {
     }
   }
 
-  // Calculate profile completion
   const calculateProfileCompletion = () => {
     let completed = 0
     const fields = ['name', 'email', 'age', 'department']

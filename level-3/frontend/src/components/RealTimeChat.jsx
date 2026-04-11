@@ -8,21 +8,18 @@ const RealTimeChat = ({ currentUser, recipientId }) => {
   const [isConnected, setIsConnected] = useState(false);
   const messagesEndRef = useRef(null);
 
-  // Initialize WebSocket connection
   useEffect(() => {
     if (currentUser && currentUser.token) {
       socketService.connect(currentUser.token);
       socketService.joinUserRoom(currentUser._id);
       setIsConnected(socketService.isConnected());
 
-      // Listen for incoming messages
       socketService.onMessage((data) => {
         if (data.senderId === recipientId || data.recipientId === currentUser._id) {
           setMessages(prev => [...prev, data]);
         }
       });
 
-      // Listen for connection status
       socketService.on('connect', () => setIsConnected(true));
       socketService.on('disconnect', () => setIsConnected(false));
 
@@ -34,12 +31,10 @@ const RealTimeChat = ({ currentUser, recipientId }) => {
     }
   }, [currentUser, recipientId]);
 
-  // Initialize empty messages array
   useEffect(() => {
     setMessages([]);
   }, [recipientId]);
 
-  // Auto-scroll to bottom
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
@@ -49,7 +44,6 @@ const RealTimeChat = ({ currentUser, recipientId }) => {
     if (!message.trim() || !recipientId) return;
 
     try {
-      // Send via WebSocket for real-time delivery
       socketService.sendMessage(recipientId, message, currentUser._id);
       setMessage('');
     } catch (error) {

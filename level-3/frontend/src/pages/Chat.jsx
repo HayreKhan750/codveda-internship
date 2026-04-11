@@ -13,17 +13,14 @@ const Chat = () => {
   const [search, setSearch] = useState('')
   const messagesEndRef = useRef(null)
 
-  // Fetch all users to show in sidebar
   const { data: usersData, loading: usersLoading, refetch: refetchUsers } = useQuery(GET_USERS)
 
-  // Fetch messages for selected conversation
   const { data: msgData, loading: msgLoading, refetch } = useQuery(GET_MESSAGES, {
     variables: { userId: selectedUser?.id },
     skip: !selectedUser,
     fetchPolicy: 'network-only',
   })
 
-  // Send message mutation
   const [sendMessage, { loading: sending }] = useMutation(SEND_MESSAGE, {
     onCompleted: () => {
       setInput('')
@@ -31,10 +28,8 @@ const Chat = () => {
     },
   })
 
-  // Mark as read
   const [markAsRead] = useMutation(MARK_AS_READ)
 
-  // Real-time subscription
   useSubscription(MESSAGE_SENT, {
     variables: { userId: user?.id },
     skip: !user?.id,
@@ -46,24 +41,18 @@ const Chat = () => {
     },
   })
 
-  // Auto-scroll on new messages
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
   }, [msgData])
 
-  // Socket connection and status updates
   useEffect(() => {
     if (!user?.id) return
 
-    // Connect socket
     socketService.connect()
     
-    // Join user's room for notifications
     socketService.joinUserRoom(user.id)
 
-    // Listen for user status updates
     const handleStatusUpdate = ({ userId, status }) => {
-      // Refetch users to get updated online status
       refetchUsers()
     }
     
@@ -74,7 +63,6 @@ const Chat = () => {
     }
   }, [user?.id, refetchUsers])
 
-  // Mark messages as read when opening chat
   useEffect(() => {
     if (msgData?.messages && selectedUser) {
       msgData.messages
@@ -111,7 +99,6 @@ const Chat = () => {
     return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
   }
 
-  // Group messages by date
   const groupedMessages = messages.reduce((groups, msg) => {
     const key = fmtDate(msg.createdAt)
     if (!groups[key]) groups[key] = []

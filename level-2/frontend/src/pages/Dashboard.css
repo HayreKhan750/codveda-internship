@@ -263,7 +263,6 @@
   color: var(--text-muted);
 }
 
-/* User Dashboard (non-admin) */
 .user-dashboard {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -409,7 +408,6 @@
   }
 }
 
-/* Hero Welcome Section */
 .hero-welcome {
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   border-radius: 20px;
@@ -536,7 +534,6 @@
   backdrop-filter: blur(10px);
 }
 
-/* Gradient Cards */
 .gradient-blue {
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: white;
@@ -566,7 +563,6 @@
   margin-top: 8px;
 }
 
-/* Floating Animation */
 .floating {
   animation: floating 3s ease-in-out infinite;
 }
@@ -576,7 +572,6 @@
   50% { transform: translateY(-10px); }
 }
 
-/* Profile Completion Card */
 .profile-completion-card {
   text-align: center;
   background: var(--bg-card);
@@ -645,7 +640,6 @@
   margin-top: 20px;
 }
 
-/* User Stats Row */
 .user-stats-row {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -707,7 +701,6 @@
   color: var(--text-muted);
 }
 
-/* Profile Grid */
 .profile-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -806,7 +799,6 @@
   border: 1px solid rgba(16,185,129,0.3);
 }
 
-/* Security Grid */
 .security-card {
   background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
   color: white;
@@ -856,7 +848,6 @@
   font-weight: 500;
 }
 
-/* Quick Actions */
 .action-buttons {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -899,7 +890,6 @@
   transform: translateY(-2px);
 }
 
-/* SVG Gradient Definition */
 svg defs {
   position: absolute;
 }

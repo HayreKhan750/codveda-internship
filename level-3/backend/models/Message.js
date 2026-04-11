@@ -29,7 +29,6 @@ const messageSchema = new mongoose.Schema({
   timestamps: true
 });
 
-// Indexes for faster conversation lookups
 messageSchema.index({ sender: 1, recipient: 1 });
 messageSchema.index({ recipient: 1, sender: 1 });
 messageSchema.index({ createdAt: -1 });

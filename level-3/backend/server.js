@@ -9,13 +9,11 @@ const compression = require('compression');
 const rateLimit = require('express-rate-limit');
 const morgan = require('morgan');
 
-// Load environment variables
 dotenv.config();
 
 const app = express();
 const server = http.createServer(app);
 const allowedOrigin = (origin, callback) => {
-  // Allow any localhost port, or the configured CLIENT_URL
   if (!origin || /^http:\/\/localhost(:\d+)?$/.test(origin) || origin === process.env.CLIENT_URL) {
     callback(null, true);
   } else {
@@ -29,24 +27,20 @@ const io = socketIo(server, {
 
 const PORT = process.env.PORT || 5000;
 
-// Security & Performance Middleware
 app.use(helmet());
 app.use(compression());
 app.use(morgan('combined'));
 
-// Rate limiting
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
   max: 100 // limit each IP to 100 requests per windowMs
 });
 app.use('/api/', limiter);
 
-// Middleware
 app.use(cors({ origin: allowedOrigin, credentials: true }));
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true }));
 
-// MongoDB Connection
 const connectDB = async () => {
   try {
     const conn = await mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/codveda_level2');
@@ -66,11 +60,9 @@ const { createApolloServer, createContext } = require('./graphql');
 const { expressMiddleware } = require('@apollo/server/express4');
 const User = require('./models/User');
 
-// Routes
 app.use('/api/auth', require('./routes/authRoutes'));
 app.use('/api/users', require('./routes/userRoutes'));
 
-// Initialize Apollo Server and WebSocket
 const startServer = async () => {
   const apolloServer = await createApolloServer(server);
   
@@ -78,23 +70,19 @@ const startServer = async () => {
     context: createContext
   }));
 
-  // WebSockets - Real-time communication
   const connectedUsers = new Map();
 
 
 io.on('connection', (socket) => {
   console.log(`User connected: ${socket.id}`);
   
-  // Join user to their personal room for notifications
   socket.on('join-user-room', async (userId) => {
     socket.join(`user-${userId}`);
     connectedUsers.set(socket.id, userId);
     console.log(`User ${userId} joined their room`);
     
-    // Update user's online status in database
     try {
       await User.findByIdAndUpdate(userId, { isOnline: true });
-      // Broadcast to all clients that user is online
       socket.broadcast.emit('user-status-update', {
         userId,
         status: 'online',
@@ -105,25 +93,21 @@ io.on('connection', (socket) => {
     }
   });
 
-  // Handle real-time chat messages
   socket.on('send-message', (data) => {
     const { recipientId, message, senderId } = data;
     
-    // Send to specific user room
     io.to(`user-${recipientId}`).emit('receive-message', {
       message,
       senderId,
       timestamp: new Date().toISOString()
     });
     
-    // Send confirmation to sender
     socket.emit('message-sent', {
       recipientId,
       timestamp: new Date().toISOString()
     });
   });
 
-  // Handle live notifications
   socket.on('send-notification', (data) => {
     const { userId, type, title, message } = data;
     
@@ -135,11 +119,9 @@ io.on('connection', (socket) => {
     });
   });
 
-  // Handle user status updates
   socket.on('update-status', (data) => {
     const { userId, status } = data;
     
-    // Broadcast to all connected clients
     socket.broadcast.emit('user-status-update', {
       userId,
       status,
@@ -152,7 +134,6 @@ io.on('connection', (socket) => {
     connectedUsers.delete(socket.id);
     console.log(`User disconnected: ${socket.id} (User: ${userId})`);
     
-    // Update user's online status in database and notify others
     if (userId) {
       try {
         await User.findByIdAndUpdate(userId, { isOnline: false });
@@ -168,7 +149,6 @@ io.on('connection', (socket) => {
   });
 });
 
-// Health check
 app.get('/api/health', (req, res) => {
   res.json({ 
     status: 'OK', 
@@ -180,7 +160,6 @@ app.get('/api/health', (req, res) => {
   });
 });
 
-// WebSocket status endpoint
 app.get('/api/websockets/status', (req, res) => {
   res.json({
     connectedUsers: connectedUsers.size,
@@ -189,13 +168,11 @@ app.get('/api/websockets/status', (req, res) => {
   });
 });
 
-// Error handling middleware
 app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).json({ error: 'Something went wrong!' });
 });
 
-// Start server
   server.listen(PORT, () => {
     console.log(`🚀 ProChat Server running on port ${PORT}`);
     console.log(`📡 Real-time WebSockets enabled`);

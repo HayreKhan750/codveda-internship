@@ -141,7 +141,6 @@
   font-size: 0.75rem;
 }
 
-/* Responsive design */
 @media (max-width: 768px) {
   .notification-dropdown {
     width: 280px;
@@ -157,7 +156,6 @@
   }
 }
 
-/* Animation for new notifications */
 @keyframes slideIn {
   from {
     opacity: 0;
@@ -173,7 +171,6 @@
   animation: slideIn 0.3s ease-out;
 }
 
-/* Scrollbar styling */
 .notification-list::-webkit-scrollbar {
   width: 6px;
 }

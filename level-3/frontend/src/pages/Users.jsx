@@ -16,7 +16,6 @@ const Users = () => {
   const [confirmModal, setConfirmModal] = useState({ isOpen: false, type: 'danger', user: null })
   const [actionError, setActionError] = useState(null)
 
-  // Admin access check
   if (!isAdmin) {
     return (
       <div style={{ padding: 'var(--spacing-2xl)', textAlign: 'center', height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>

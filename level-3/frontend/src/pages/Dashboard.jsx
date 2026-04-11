@@ -141,7 +141,6 @@ const Dashboard = () => {
           </div>
         </>
       ) : (
-        // Regular user view - Premium redesign
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))', gap: 'var(--spacing-xl)' }}>
           <div style={{ background: 'var(--bg-secondary)', border: '1px solid var(--glass-border)', borderRadius: 'var(--radius-lg)', padding: 'var(--spacing-xl)' }}>
             <h3 style={{ fontSize: 18, fontWeight: 700, margin: '0 0 24px 0', display: 'flex', alignItems: 'center', gap: 10, color: 'var(--text-primary)' }}>

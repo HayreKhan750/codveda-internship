@@ -334,7 +334,6 @@
   }
 }
 
-/* Custom Delete Modal Styles */
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -460,7 +459,6 @@
   cursor: not-allowed;
 }
 
-/* Edit Modal Specific Styles */
 .edit-dialog {
   max-width: 500px;
 }

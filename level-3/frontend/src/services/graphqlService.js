@@ -4,7 +4,6 @@ const httpLink = createHttpLink({
   uri: import.meta.env.VITE_SERVER_URL ? `${import.meta.env.VITE_SERVER_URL}/graphql` : 'http://localhost:5000/graphql',
 });
 
-// GraphQL Client
 export const client = new ApolloClient({
   link: httpLink,
   cache: new InMemoryCache(),
@@ -18,7 +17,6 @@ export const client = new ApolloClient({
   },
 });
 
-// GraphQL Queries
 export const GET_ME = gql`
   query GetMe {
     me {
@@ -146,7 +144,6 @@ export const GET_USER_STATS = gql`
   }
 `;
 
-// GraphQL Mutations
 export const REGISTER = gql`
   mutation Register($name: String!, $email: String!, $password: String!, $age: Int, $department: String!) {
     register(name: $name, email: $email, password: $password, age: $age, department: $department) {
@@ -266,7 +263,6 @@ export const DEACTIVATE_USER = gql`
   }
 `;
 
-// GraphQL Subscriptions
 export const MESSAGE_RECEIVED = gql`
   subscription MessageReceived($userId: ID!) {
     messageReceived(userId: $userId) {

@@ -11,21 +11,17 @@ const { makeExecutableSchema } = require('@graphql-tools/schema');
 
 const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key-change-in-production';
 
-// Create Apollo Server
 const createApolloServer = async (httpServer) => {
   const schema = makeExecutableSchema({ typeDefs, resolvers });
 
-  // Create WebSocket server mapped to /graphql
   const wsServer = new WebSocketServer({
     server: httpServer,
     path: '/graphql',
   });
 
-  // Attach graphql-ws to the WebSocketServer
   const serverCleanup = useServer({
     schema,
     context: async (ctx, msg, args) => {
-      // Extract auth token from connectionParams for WebSockets
       const token = ctx.connectionParams?.authorization || '';
       return createContext({ req: { headers: { authorization: token } } });
     }
@@ -52,7 +48,6 @@ const createApolloServer = async (httpServer) => {
   return server;
 };
 
-// Context creation for authentication
 const createContext = async ({ req }) => {
   const token = req.headers.authorization || '';
   

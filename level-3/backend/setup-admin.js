@@ -1,4 +1,3 @@
-// Quick setup script to ensure admin user exists
 const mongoose = require('mongoose');
 const User = require('./models/User');
 require('dotenv').config();
@@ -8,7 +7,6 @@ const setupAdmin = async () => {
     await mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/codveda_level2');
     console.log('Connected to MongoDB');
 
-    // Check if admin exists
     let admin = await User.findOne({ email: 'admin@codveda.com' });
     
     if (!admin) {
@@ -27,7 +25,6 @@ const setupAdmin = async () => {
       console.log('Admin user already exists');
     }
 
-    // Create sample users if less than 3 users exist
     const userCount = await User.countDocuments({ isActive: true });
     if (userCount < 3) {
       console.log('Creating sample users...');

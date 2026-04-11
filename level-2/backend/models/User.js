@@ -22,7 +22,7 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: [true, 'Password is required'],
       minlength: [6, 'Password must be at least 6 characters'],
-      select: false, // never returned in queries unless explicitly .select('+password')
+      select: false,
     },
     age: {
       type: Number,
@@ -59,19 +59,16 @@ const userSchema = new mongoose.Schema(
   }
 );
 
-// ── Pre-save: hash password ────────────────────────────────────
 userSchema.pre('save', async function (next) {
   if (!this.isModified('password')) return next();
   this.password = await bcrypt.hash(this.password, 12);
   next();
 });
 
-// ── Instance method: compare password ─────────────────────────
 userSchema.methods.comparePassword = async function (candidatePassword) {
   return bcrypt.compare(candidatePassword, this.password);
 };
 
-// ── Indexes ────────────────────────────────────────────────────
 userSchema.index({ department: 1 });
 userSchema.index({ role: 1 });
 userSchema.index({ createdAt: -1 });

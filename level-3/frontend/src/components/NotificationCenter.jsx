@@ -6,8 +6,6 @@ const NotificationCenter = ({ currentUser }) => {
   const [notifications, setNotifications] = useState([]);
   const [showNotifications, setShowNotifications] = useState(false);
 
-  // Initialize WebSocket for real-time notifications
-  // Load initial notifications from localStorage
   useEffect(() => {
     if (currentUser) {
       const savedNotifications = localStorage.getItem(`notifications_${currentUser._id}`);
@@ -17,17 +15,12 @@ const NotificationCenter = ({ currentUser }) => {
     }
   }, [currentUser]);
 
-  // Real-time notifications via Apollo Subscription
-  // (Assuming a basic NOTIFICATION_RECEIVED subscription if one exists in operations.js,
-  // or simply acting as a local store for now)
 
 
   const handleMarkAsRead = async (notificationId) => {
     try {
-      // Remove from local state
       setNotifications(prev => prev.filter(n => n.id !== notificationId));
       
-      // Save to localStorage
       if (currentUser) {
         localStorage.setItem(`notifications_${currentUser._id}`, 
           JSON.stringify(notifications.filter(n => n.id !== notificationId)));
@@ -39,10 +32,8 @@ const NotificationCenter = ({ currentUser }) => {
 
   const handleMarkAllAsRead = async () => {
     try {
-      // Clear all notifications
       setNotifications([]);
       
-      // Save to localStorage
       if (currentUser) {
         localStorage.setItem(`notifications_${currentUser._id}`, JSON.stringify([]));
       }

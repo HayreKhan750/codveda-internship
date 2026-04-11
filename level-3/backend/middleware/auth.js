@@ -3,12 +3,10 @@ const User = require('../models/User');
 
 const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key-change-in-production';
 
-// Protect routes - verify JWT token
 const protect = async (req, res, next) => {
   try {
     let token;
 
-    // Check for token in Authorization header
     if (req.headers.authorization?.startsWith('Bearer')) {
       token = req.headers.authorization.split(' ')[1];
     }
@@ -18,10 +16,8 @@ const protect = async (req, res, next) => {
     }
 
     try {
-      // Verify token
       const decoded = jwt.verify(token, JWT_SECRET);
       
-      // Get user from token (exclude password)
       const user = await User.findById(decoded.id).select('-password');
       
       if (!user) {
@@ -43,7 +39,6 @@ const protect = async (req, res, next) => {
   }
 };
 
-// Admin only middleware
 const adminOnly = (req, res, next) => {
   if (req.user && req.user.role === 'admin') {
     next();
@@ -52,7 +47,6 @@ const adminOnly = (req, res, next) => {
   }
 };
 
-// Generate JWT token - embed role so GraphQL context has it without a DB lookup
 const generateToken = (id, role = 'user') => {
   return jwt.sign({ id, role }, JWT_SECRET, {
     expiresIn: '30d'

@@ -4,7 +4,6 @@ const { body, validationResult } = require('express-validator');
 const User = require('../models/User');
 const { protect, generateToken } = require('../middleware/auth');
 
-// Validation middleware
 const validate = (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -13,9 +12,6 @@ const validate = (req, res, next) => {
   next();
 };
 
-// @route   POST /api/auth/register
-// @desc    Register new user
-// @access  Public
 router.post('/register', [
   body('name').trim().notEmpty().withMessage('Name is required'),
   body('email').isEmail().withMessage('Please enter a valid email'),
@@ -25,13 +21,11 @@ router.post('/register', [
   try {
     const { name, email, password, age, department } = req.body;
 
-    // Check if user exists
     const existingUser = await User.findOne({ email: email.toLowerCase() });
     if (existingUser) {
       return res.status(400).json({ error: 'User already exists with this email' });
     }
 
-    // Create user
     const user = await User.create({
       name,
       email: email.toLowerCase(),
@@ -40,7 +34,6 @@ router.post('/register', [
       department
     });
 
-    // Generate token
     const token = generateToken(user._id);
 
     res.status(201).json({
@@ -55,9 +48,6 @@ router.post('/register', [
   }
 });
 
-// @route   POST /api/auth/login
-// @desc    Login user
-// @access  Public
 router.post('/login', [
   body('email').isEmail().withMessage('Please enter a valid email'),
   body('password').notEmpty().withMessage('Password is required'),
@@ -66,7 +56,6 @@ router.post('/login', [
   try {
     const { email, password } = req.body;
 
-    // Find user with password
     const user = await User.findOne({ email: email.toLowerCase() }).select('+password');
     
     if (!user || !user.isActive) {
@@ -92,9 +81,6 @@ router.post('/login', [
   }
 });
 
-// @route   GET /api/auth/me
-// @desc    Get current user
-// @access  Private
 router.get('/me', protect, async (req, res) => {
   try {
     const user = await User.findById(req.user._id);
@@ -104,9 +90,6 @@ router.get('/me', protect, async (req, res) => {
   }
 });
 
-// @route   PUT /api/auth/change-password
-// @desc    Change own password
-// @access  Private
 router.put('/change-password', protect, [
   body('currentPassword').notEmpty().withMessage('Current password is required'),
   body('newPassword').isLength({ min: 6 }).withMessage('New password must be at least 6 characters'),
@@ -122,17 +105,13 @@ router.put('/change-password', protect, [
     const isMatch = await user.comparePassword(currentPassword);
     if (!isMatch) return res.status(401).json({ error: 'Current password is incorrect' });
     user.password = newPassword;
-    await user.save(); // triggers pre-save bcrypt hook
-    res.json({ success: true, message: 'Password changed successfully' });
+    await user.save(); res.json({ success: true, message: 'Password changed successfully' });
   } catch (error) {
     console.error('Change password error:', error);
     res.status(500).json({ error: 'Server error' });
   }
 });
 
-// @route   PUT /api/auth/update-profile
-// @desc    Update user profile
-// @access  Private
 router.put('/update-profile', protect, [
   body('name').optional().trim().notEmpty().withMessage('Name cannot be empty'),
   body('age').optional().isInt({ min: 1, max: 120 }).withMessage('Age must be between 1 and 120'),

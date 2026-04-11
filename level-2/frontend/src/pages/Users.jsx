@@ -19,14 +19,12 @@ const Users = () => {
     limit: 10
   })
 
-  // Custom modal state
   const [showDeleteModal, setShowDeleteModal] = useState(false)
   const [showEditModal, setShowEditModal] = useState(false)
   const [deleteTarget, setDeleteTarget] = useState(null)
   const [editTarget, setEditTarget] = useState(null)
   const [actionLoading, setActionLoading] = useState(false)
   
-  // Edit form state
   const [editForm, setEditForm] = useState({
     name: '',
     email: '',
@@ -86,7 +84,6 @@ const Users = () => {
     setDeleteTarget(null)
   }
 
-  // Edit functionality
   const handleEditClick = (user) => {
     setEditTarget(user)
     setEditForm({
@@ -124,7 +121,6 @@ const Users = () => {
     setEditTarget(null)
   }
 
-  // Safe date formatting
   const formatDate = (dateString) => {
     if (!dateString) return 'Recently'
     try {

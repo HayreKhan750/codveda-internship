@@ -21,10 +21,8 @@ const PremiumChat = () => {
   const API_URL = import.meta.env.VITE_SERVER_URL ? `${import.meta.env.VITE_SERVER_URL}/api` : 'http://localhost:5000/api'
 
   useEffect(() => {
-    // Initialize socket connection
     socketService.connect()
     
-    // Check socket connection
     const checkConnection = () => {
       setIsConnected(socketService.isConnected())
     }
@@ -32,7 +30,6 @@ const PremiumChat = () => {
     const interval = setInterval(checkConnection, 1000)
     checkConnection()
 
-    // Fetch users
     const fetchUsers = async () => {
       try {
         const token = localStorage.getItem('token')
@@ -51,7 +48,6 @@ const PremiumChat = () => {
 
     fetchUsers()
 
-    // Socket event listeners
     const handleReceiveMessage = (data) => {
       if (selectedUser && data.senderId === selectedUser._id) {
         setMessages(prev => [...prev, {
@@ -79,10 +75,8 @@ const PremiumChat = () => {
 
   useEffect(() => {
     if (selectedUser && currentUser) {
-      // Join user room for real-time messaging
       socketService.joinUserRoom(currentUser._id)
       
-      // Load initial messages (in a real app, this would load from backend)
       setMessages([])
     }
   }, [selectedUser, currentUser])
@@ -115,21 +109,17 @@ const PremiumChat = () => {
     }
 
     try {
-      // Add message to UI immediately
       setMessages(prev => [...prev, newMessage])
       setMessage('')
 
-      // Send via WebSocket for real-time delivery
       socketService.sendMessage(selectedUser._id, message.trim(), currentUser._id)
       
-      // Update message status to delivered
       setTimeout(() => {
         setMessages(prev => prev.map(msg => 
           msg.id === newMessage.id ? { ...msg, status: 'delivered' } : msg
         ))
       }, 500)
 
-      // Update message status to read (simulate)
       setTimeout(() => {
         setMessages(prev => prev.map(msg => 
           msg.id === newMessage.id ? { ...msg, status: 'read' } : msg
@@ -138,7 +128,6 @@ const PremiumChat = () => {
 
     } catch (error) {
       console.error('Error sending message:', error)
-      // Remove message if failed
       setMessages(prev => prev.filter(msg => msg.id !== newMessage.id))
     }
   }
@@ -151,12 +140,10 @@ const PremiumChat = () => {
       socketService.sendTyping(currentUser._id, selectedUser?._id)
     }
 
-    // Clear typing timeout
     if (typingTimeoutRef.current) {
       clearTimeout(typingTimeoutRef.current)
     }
 
-    // Set new timeout
     typingTimeoutRef.current = setTimeout(() => {
       setIsTyping(false)
     }, 1000)

@@ -10,7 +10,6 @@ const rateLimit = require('express-rate-limit');
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// ── Security & Performance ────────────────────────────────────
 app.use(helmet());
 app.use(compression());
 app.use(morgan('dev'));
@@ -22,7 +21,6 @@ const limiter = rateLimit({
 });
 app.use('/api/', limiter);
 
-// ── CORS ──────────────────────────────────────────────────────
 app.use(cors({
   origin: process.env.CLIENT_URL || 'http://localhost:5173',
   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
@@ -30,11 +28,9 @@ app.use(cors({
   credentials: true,
 }));
 
-// ── Body Parsing ──────────────────────────────────────────────
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true }));
 
-// ── Database ───────────────────────────────────────────────────
 const connectDB = async () => {
   try {
     const conn = await mongoose.connect(
@@ -50,11 +46,9 @@ const connectDB = async () => {
 
 connectDB();
 
-// ── Routes ────────────────────────────────────────────────────
 app.use('/api/auth',  require('./routes/authRoutes'));
 app.use('/api/users', require('./routes/userRoutes'));
 
-// ── Health Check ──────────────────────────────────────────────
 app.get('/api/health', (req, res) => {
   res.json({
     status: 'OK',
@@ -65,12 +59,10 @@ app.get('/api/health', (req, res) => {
   });
 });
 
-// ── 404 ───────────────────────────────────────────────────────
 app.use((req, res) => {
   res.status(404).json({ error: 'Route not found', path: req.originalUrl });
 });
 
-// ── Global Error Handler ──────────────────────────────────────
 app.use((err, req, res, _next) => {
   console.error(err.stack);
   res.status(500).json({ error: 'Internal server error' });
