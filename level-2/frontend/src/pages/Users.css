@@ -341,8 +341,8 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.6);
-  backdrop-filter: blur(4px);
+  background: rgba(15, 23, 42, 0.85);
+  backdrop-filter: blur(12px);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -356,13 +356,15 @@
 }
 
 .modal-dialog {
-  background: white;
-  border-radius: 16px;
+  background: linear-gradient(135deg, var(--bg-card) 0%, rgba(124,58,237,0.08) 100%);
+  border-radius: var(--radius-xl);
   padding: 24px;
   max-width: 400px;
   width: 90%;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  box-shadow: var(--shadow-lg), 0 0 60px rgba(0,0,0,0.4), 0 0 0 1px var(--glass-border);
+  border: 1px solid var(--glass-border);
   animation: slideUp 0.3s ease;
+  backdrop-filter: blur(20px);
 }
 
 @keyframes slideUp {
@@ -385,13 +387,14 @@
 
 .modal-header i {
   font-size: 1.5rem;
-  color: #f59e0b;
+  color: var(--warning);
+  text-shadow: 0 0 20px rgba(245,158,11,0.4);
 }
 
 .modal-header h3 {
   font-size: 1.25rem;
   font-weight: 600;
-  color: #1e293b;
+  color: var(--text-primary);
   margin: 0;
 }
 
@@ -400,13 +403,13 @@
 }
 
 .modal-body p {
-  color: #64748b;
+  color: var(--text-secondary);
   margin: 0 0 8px 0;
   line-height: 1.5;
 }
 
 .modal-warning {
-  color: #dc2626 !important;
+  color: var(--danger) !important;
   font-weight: 500;
   font-size: 0.9rem;
 }
@@ -419,30 +422,37 @@
 
 .modal-footer button {
   padding: 10px 20px;
-  border-radius: 8px;
+  border-radius: var(--radius-md);
   font-size: 0.9rem;
   font-weight: 500;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: var(--transition);
   border: none;
 }
 
 .btn-cancel {
-  background: #f1f5f9;
-  color: #64748b;
+  background: var(--glass);
+  color: var(--text-secondary);
+  border: 1px solid var(--glass-border);
 }
 
 .btn-cancel:hover {
-  background: #e2e8f0;
+  background: var(--glass-hover);
+  border-color: var(--border-hover);
+  color: var(--text-primary);
 }
 
 .btn-confirm-delete {
-  background: #dc2626;
+  background: linear-gradient(135deg, rgba(239,68,68,0.9), rgba(220,38,38,0.9));
   color: white;
+  border: 1px solid rgba(239,68,68,0.3);
+  box-shadow: 0 4px 15px rgba(239,68,68,0.2);
 }
 
 .btn-confirm-delete:hover {
-  background: #b91c1c;
+  background: linear-gradient(135deg, rgba(239,68,68,1), rgba(220,38,38,1));
+  box-shadow: 0 6px 20px rgba(239,68,68,0.3);
+  transform: translateY(-2px);
 }
 
 .modal-footer button:disabled {
@@ -456,7 +466,8 @@
 }
 
 .edit-dialog .modal-header i {
-  color: #4f46e5;
+  color: var(--primary-light);
+  text-shadow: 0 0 20px rgba(124,58,237,0.4);
 }
 
 .edit-form .form-group {
@@ -468,26 +479,28 @@
   margin-bottom: 6px;
   font-size: 0.9rem;
   font-weight: 500;
-  color: #374151;
+  color: var(--text-secondary);
 }
 
 .edit-form input,
 .edit-form select {
   width: 100%;
   padding: 10px 12px;
-  border: 1px solid #d1d5db;
-  border-radius: 8px;
+  border: 2px solid var(--glass-border);
+  border-radius: var(--radius-md);
   font-size: 0.95rem;
-  background: #f9fafb;
-  transition: all 0.2s;
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  transition: var(--transition);
   box-sizing: border-box;
 }
 
 .edit-form input:focus,
 .edit-form select:focus {
   outline: none;
-  border-color: #4f46e5;
-  background: white;
+  border-color: var(--primary);
+  background: var(--bg-tertiary);
+  box-shadow: 0 0 0 3px rgba(124,58,237,0.1);
 }
 
 .edit-form .form-row {
@@ -497,10 +510,14 @@
 }
 
 .btn-save {
-  background: #4f46e5;
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
   color: white;
+  border: 1px solid rgba(124,58,237,0.3);
+  box-shadow: 0 4px 15px rgba(124,58,237,0.2);
 }
 
 .btn-save:hover {
-  background: #4338ca;
+  background: linear-gradient(135deg, var(--primary-light), var(--primary));
+  box-shadow: 0 6px 20px rgba(124,58,237,0.3);
+  transform: translateY(-2px);
 }
