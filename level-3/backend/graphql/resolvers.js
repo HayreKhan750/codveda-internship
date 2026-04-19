@@ -170,7 +170,7 @@ const resolvers = {
 
     updateMessage: async (_, { messageId, content }, { user }) => {
       if (!user) throw new Error('Authentication required');
-      const message = await Message.findById(messageId);
+      const message = await Message.findById(messageId).populate('sender');
       if (!message) throw new Error('Message not found');
       if (String(message.sender._id) !== String(user.id)) throw new Error('Access denied');
       const updated = await Message.findByIdAndUpdate(messageId, { content }, { new: true }).populate('sender recipient');
@@ -179,7 +179,7 @@ const resolvers = {
 
     deleteMessage: async (_, { messageId }, { user }) => {
       if (!user) throw new Error('Authentication required');
-      const message = await Message.findById(messageId);
+      const message = await Message.findById(messageId).populate('sender');
       if (!message) throw new Error('Message not found');
       if (String(message.sender._id) !== String(user.id)) throw new Error('Access denied');
       await Message.findByIdAndDelete(messageId);
