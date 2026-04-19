@@ -4,7 +4,7 @@ require('dotenv').config();
 
 const setupAdmin = async () => {
   try {
-    await mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/codveda_level2');
+    await mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/codveda_level3');
     console.log('Connected to MongoDB');
 
     let admin = await User.findOne({ email: 'admin@codveda.com' });

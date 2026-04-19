@@ -3,7 +3,7 @@ import axios from 'axios'
 import { useAuth } from '../contexts/AuthContext'
 import './Users.css'
 
-const API_URL = 'http://localhost:5001/api'
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5001/api'
 
 const Users = () => {
   const { isAdmin } = useAuth()

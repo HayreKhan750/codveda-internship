@@ -14,8 +14,10 @@ import { getMainDefinition } from '@apollo/client/utilities'
 import App from './App.jsx'
 import './index.css'
 
+const SERVER_URL = import.meta.env.VITE_SERVER_URL || 'http://localhost:5000'
+
 const httpLink = createHttpLink({
-  uri: 'http://localhost:5000/graphql',
+  uri: `${SERVER_URL}/graphql`,
 })
 
 const authLink = setContext((_, { headers }) => {
@@ -30,7 +32,7 @@ const authLink = setContext((_, { headers }) => {
 
 const wsLink = new GraphQLWsLink(
   createClient({
-    url: 'ws://localhost:5000/graphql',
+    url: `${SERVER_URL.replace(/^http/, 'ws')}/graphql`,
     connectionParams: () => ({
       authorization: localStorage.getItem('token')
         ? `Bearer ${localStorage.getItem('token')}`

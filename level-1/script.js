@@ -1,5 +1,5 @@
 
-const API_BASE_URL = 'http://localhost:3003/api';
+const API_BASE_URL = window.__ENV__?.API_URL || 'http://localhost:3003/api';
 
 const AppState = {
   users: [],
