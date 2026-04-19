@@ -51,7 +51,6 @@ const Register = () => {
   return (
     <div className="auth-page">
       <div className="auth-card" style={{ maxWidth: 500 }}>
-        {/* Logo */}
         <div className="auth-logo">
           <i className="fas fa-database"></i>
           <span>Codveda</span>
@@ -68,7 +67,6 @@ const Register = () => {
         )}
 
         <form onSubmit={handleSubmit}>
-          {/* Row 1: Name + Age */}
           <div className="form-row">
             <div className="form-group">
               <label className="form-label" htmlFor="name">
@@ -88,8 +86,6 @@ const Register = () => {
               <span className="form-helper">Optional</span>
             </div>
           </div>
-
-          {/* Email */}
           <div className="form-group">
             <label className="form-label" htmlFor="email">
               <i className="fas fa-envelope"></i> Email Address
@@ -98,8 +94,6 @@ const Register = () => {
               value={formData.email} onChange={handleChange}
               placeholder="you@example.com" autoComplete="email" required />
           </div>
-
-          {/* Row 2: Department + Password */}
           <div className="form-row">
             <div className="form-group">
               <label className="form-label" htmlFor="department">
@@ -130,7 +124,6 @@ const Register = () => {
                   <i className={`fas ${showPassword ? 'fa-eye-slash' : 'fa-eye'}`}></i>
                 </button>
               </div>
-              {/* Strength bar */}
               {formData.password && (
                 <div style={{ marginTop: 6 }}>
                   <div style={{ display: 'flex', gap: 3, marginBottom: 3 }}>

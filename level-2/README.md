@@ -128,7 +128,7 @@ npm start
 npm run dev
 ```
 
-Server runs on `http://localhost:5000`
+Server runs on `http://localhost:5001`
 
 ### Step 5: Install Frontend Dependencies
 ```bash
@@ -149,15 +149,14 @@ After running `npm run seed`:
 
 | Role | Email | Password |
 |------|-------|----------|
-| Admin | admin@codveda.com | admin123 |
-| User | john@example.com | password123 |
-| User | jane@example.com | password123 |
+| Admin | admin@codveda.io | Admin@123 |
+| User | alex@codveda.io | Pass@1234 |
 
 ## API Testing
 
 ### Register
 ```bash
-curl -X POST http://localhost:5000/api/auth/register \
+curl -X POST http://localhost:5001/api/auth/register \
   -H "Content-Type: application/json" \
   -d '{
     "name": "New User",
@@ -170,18 +169,18 @@ curl -X POST http://localhost:5000/api/auth/register \
 
 ### Login
 ```bash
-curl -X POST http://localhost:5000/api/auth/login \
+curl -X POST http://localhost:5001/api/auth/login \
   -H "Content-Type: application/json" \
   -d '{
-    "email": "admin@codveda.com",
-    "password": "admin123"
+    "email": "admin@codveda.io",
+    "password": "Admin@123"
   }'
 ```
 
 ### Get Users (Admin)
 ```bash
 curl -H "Authorization: Bearer <token>" \
-  http://localhost:5000/api/users
+  http://localhost:5001/api/users
 ```
 
 ## Security Features
@@ -199,7 +198,7 @@ curl -H "Authorization: Bearer <token>" \
 | Variable | Description | Default |
 |----------|-------------|---------|
 | `NODE_ENV` | Environment mode | development |
-| `PORT` | Server port | 5000 |
+| `PORT` | Server port | 5001 |
 | `MONGODB_URI` | MongoDB connection string | mongodb://localhost:27017/codveda_level2 |
 | `JWT_SECRET` | JWT signing secret | your-secret-key |
 

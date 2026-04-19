@@ -12,7 +12,6 @@ const Profile = () => {
   const [isSaving, setIsSaving] = useState(false)
   const [successMessage, setSuccessMessage] = useState('')
 
-  // Change password state
   const [pwData, setPwData] = useState({ currentPassword: '', newPassword: '', confirmPassword: '' })
   const [pwLoading, setPwLoading] = useState(false)
   const [pwError, setPwError] = useState('')
@@ -77,8 +76,6 @@ const Profile = () => {
 
   return (
     <div className="profile-page">
-
-      {/* Profile Header */}
       <div className="profile-header">
         <div className="profile-avatar-large">
           {getInitials(user?.name)}
@@ -91,8 +88,6 @@ const Profile = () => {
           </span>
         </div>
       </div>
-
-      {/* Messages */}
       {successMessage && (
         <div className="alert alert-success">
           <i className="fas fa-check-circle"></i>
@@ -106,8 +101,6 @@ const Profile = () => {
           {error}
         </div>
       )}
-
-      {/* Profile Form */}
       <div className="profile-form-container">
         <div className="form-header">
           <h3>
@@ -237,8 +230,6 @@ const Profile = () => {
           )}
         </form>
       </div>
-
-      {/* Account Info */}
       <div className="account-info">
         <h3>
           <i className="fas fa-info-circle"></i>
@@ -261,8 +252,6 @@ const Profile = () => {
           </div>
         </div>
       </div>
-
-      {/* Change Password */}
       <div className="account-info" style={{ marginTop: 'var(--spacing-xl)' }}>
         <h3 style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 'var(--spacing-lg)' }}>
           <i className="fas fa-lock"></i> Change Password

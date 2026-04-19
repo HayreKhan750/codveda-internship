@@ -66,7 +66,6 @@ module.exports = (sequelize) => {
     ]
   });
 
-  // Hash password before saving
   User.beforeCreate(async (user) => {
     if (user.password) {
       const salt = await bcrypt.genSalt(12);
@@ -81,12 +80,10 @@ module.exports = (sequelize) => {
     }
   });
 
-  // Instance method to compare passwords
   User.prototype.comparePassword = async function(candidatePassword) {
     return await bcrypt.compare(candidatePassword, this.password);
   };
 
-  // Instance method to hide password in JSON output
   User.prototype.toJSON = function () {
     const values = { ...this.get() };
     delete values.password;

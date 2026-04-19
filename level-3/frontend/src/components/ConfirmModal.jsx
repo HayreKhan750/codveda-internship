@@ -36,10 +36,7 @@ const ConfirmModal = ({
         overflow: 'hidden',
         animation: 'fadeInUp 0.25s cubic-bezier(0.34,1.56,0.64,1)',
       }}>
-        {/* Top accent bar */}
         <div style={{ height: 3, background: `linear-gradient(90deg, ${cfg.color}, transparent)` }} />
-
-        {/* Header */}
         <div style={{ padding: '24px 24px 0' }}>
           <div style={{
             width: 64, height: 64, borderRadius: 16,
@@ -57,16 +54,10 @@ const ConfirmModal = ({
             color: '#f1f5f9', letterSpacing: '-0.3px'
           }}>{title}</h3>
         </div>
-
-        {/* Body */}
         <div style={{ padding: '12px 24px 24px' }}>
           <p style={{ margin: 0, fontSize: 14, color: '#94a3b8', lineHeight: 1.65 }}>{message}</p>
         </div>
-
-        {/* Divider */}
         <div style={{ height: 1, background: 'rgba(255,255,255,0.06)', margin: '0 24px' }} />
-
-        {/* Actions */}
         <div style={{
           padding: 20, display: 'flex',
           justifyContent: 'flex-end', gap: 12

@@ -65,7 +65,6 @@ const Profile = () => {
 
   return (
     <div className="profile-page">
-      {/* Profile Header */}
       <div className="profile-header">
         <div className="profile-avatar-large">
           {getInitials(user?.name)}
@@ -78,8 +77,6 @@ const Profile = () => {
           </span>
         </div>
       </div>
-
-      {/* Messages */}
       {successMessage && (
         <div className="alert alert-success">
           <i className="fas fa-check-circle"></i>
@@ -93,8 +90,6 @@ const Profile = () => {
           {error}
         </div>
       )}
-
-      {/* Profile Form */}
       <div className="profile-form-container">
         <div className="form-header">
           <h3>
@@ -224,8 +219,6 @@ const Profile = () => {
           )}
         </form>
       </div>
-
-      {/* Account Info */}
       <div className="account-info">
         <h3>
           <i className="fas fa-info-circle"></i>

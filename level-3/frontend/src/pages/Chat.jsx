@@ -108,10 +108,7 @@ const Chat = () => {
 
   return (
     <div style={{ display: 'flex', height: 'calc(100vh - 64px)', overflow: 'hidden' }}>
-
-      {/* ── Sidebar: User List ── */}
       <div style={{ width: 300, borderRight: '1px solid var(--glass-border)', display: 'flex', flexDirection: 'column', background: 'var(--bg-primary)', flexShrink: 0 }}>
-        {/* Header */}
         <div style={{ padding: 'var(--spacing-lg)', borderBottom: '1px solid var(--glass-border)' }}>
           <h2 style={{ fontSize: 16, fontWeight: 700, marginBottom: 'var(--spacing-sm)' }}>
             <i className="fas fa-comments" style={{ color: 'var(--primary-light)', marginRight: 8 }}></i> Messages
@@ -126,8 +123,6 @@ const Chat = () => {
             />
           </div>
         </div>
-
-      {/* User list */}
         <div style={{ flex: 1, overflowY: 'auto' }}>
           {usersLoading ? (
             <div style={{ padding: 20, textAlign: 'center' }}><div className="spinner"></div></div>
@@ -179,8 +174,6 @@ const Chat = () => {
           ))}
         </div>
       </div>
-
-      {/* ── Main: Conversation ── */}
       {!selectedUser ? (
         <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 'var(--spacing-md)', color: 'var(--text-muted)' }}>
           <i className="fas fa-comment-dots" style={{ fontSize: 56, opacity: .3 }}></i>
@@ -189,7 +182,6 @@ const Chat = () => {
         </div>
       ) : (
         <div style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
-          {/* Conversation header */}
           <div style={{ padding: 'var(--spacing-md) var(--spacing-xl)', borderBottom: '1px solid var(--glass-border)', display: 'flex', alignItems: 'center', gap: 'var(--spacing-md)', background: 'var(--bg-primary)', flexShrink: 0 }}>
             <div style={{ position: 'relative' }}>
               <div className="avatar">{initials(selectedUser.name)}</div>
@@ -202,8 +194,6 @@ const Chat = () => {
               </p>
             </div>
           </div>
-
-          {/* Messages */}
           <div style={{ flex: 1, overflowY: 'auto', padding: 'var(--spacing-xl)', display: 'flex', flexDirection: 'column', gap: 'var(--spacing-sm)' }}>
             {msgLoading ? (
               <div className="loading-center"><div className="spinner"></div><p>Loading messages…</p></div>
@@ -215,7 +205,6 @@ const Chat = () => {
               </div>
             ) : Object.entries(groupedMessages).map(([date, msgs]) => (
               <div key={date} style={{ width: '100%' }}>
-                {/* Date separator */}
                 <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-md)', margin: 'var(--spacing-md) 0' }}>
                   <div style={{ flex: 1, height: 1, background: 'var(--glass-border)' }}></div>
                   <span style={{ fontSize: 11, fontWeight: 600, color: 'var(--text-muted)', padding: '2px 10px', background: 'var(--bg-secondary)', borderRadius: 'var(--radius-full)', border: '1px solid var(--glass-border)' }}>{date}</span>
@@ -252,8 +241,6 @@ const Chat = () => {
             ))}
             <div ref={messagesEndRef} />
           </div>
-
-          {/* Input */}
           <form onSubmit={handleSend} style={{ padding: 'var(--spacing-md) var(--spacing-xl)', borderTop: '1px solid var(--glass-border)', display: 'flex', gap: 'var(--spacing-sm)', background: 'var(--bg-primary)', flexShrink: 0 }}>
             <input
               value={input}

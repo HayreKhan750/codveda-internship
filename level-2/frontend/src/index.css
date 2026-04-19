@@ -1,6 +1,3 @@
-   Codveda Level-2 — Premium Design System
-   Shared token system (mirrors Level-1 & Level-3 palette)
-═══════════════════════════════════════════════════════════════ */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
 
 :root {
@@ -44,7 +41,6 @@
 
   --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 
-  /* Dept */
   --dept-engineering: #7c3aed;
   --dept-design:      #ec4899;
   --dept-marketing:   #f59e0b;

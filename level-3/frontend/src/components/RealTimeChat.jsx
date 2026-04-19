@@ -168,8 +168,6 @@ const RealTimeChat = ({ currentUser, recipientId }) => {
             })}
           </>
         )}
-        
-        {/* Typing Indicator */}
         {false && (
           <div className="message received">
             <div className="message-avatar">...</div>

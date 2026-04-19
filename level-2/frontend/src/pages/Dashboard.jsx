@@ -96,7 +96,6 @@ const Dashboard = () => {
 
   return (
     <div className="dashboard">
-      {/* Hero Welcome Section */}
       <div className="hero-welcome">
         <div className="hero-content">
           <div className="greeting">{getGreeting()},</div>
@@ -129,7 +128,6 @@ const Dashboard = () => {
 
       {isAdmin ? (
         <>
-          {/* Admin Stats Grid */}
           <div className="stats-grid">
             <div className="stat-card primary gradient-blue">
               <div className="stat-icon floating">
@@ -177,8 +175,6 @@ const Dashboard = () => {
               </div>
             </div>
           </div>
-
-          {/* Department Distribution */}
           <div className="dashboard-section animated">
             <h3><i className="fas fa-building"></i> Department Distribution</h3>
             <div className="department-grid">
@@ -201,8 +197,6 @@ const Dashboard = () => {
               )}
             </div>
           </div>
-
-          {/* Recent Users */}
           <div className="dashboard-section animated">
             <h3><i className="fas fa-clock"></i> Recent Activity</h3>
             <div className="recent-users-list">
@@ -232,7 +226,6 @@ const Dashboard = () => {
       ) : (
         /* Regular User View - Enhanced */
         <div className="user-dashboard">
-          {/* Profile Completion Card */}
           <div className="info-card profile-completion-card">
             <div className="completion-header">
               <h3><i className="fas fa-chart-pie"></i> Profile Completion</h3>
@@ -259,8 +252,6 @@ const Dashboard = () => {
                 : 'Complete your profile to unlock all features'}
             </p>
           </div>
-
-          {/* Stats Row */}
           <div className="user-stats-row">
             <div className="user-stat-card">
               <div className="user-stat-icon">
@@ -290,8 +281,6 @@ const Dashboard = () => {
               </div>
             </div>
           </div>
-
-          {/* Profile Details Card */}
           <div className="info-card profile-details">
             <h3><i className="fas fa-id-card"></i> Profile Information</h3>
             <div className="profile-grid">
@@ -337,8 +326,6 @@ const Dashboard = () => {
               </div>
             </div>
           </div>
-
-          {/* Security Card */}
           <div className="info-card security-card">
             <h3><i className="fas fa-lock"></i> Security Status</h3>
             <div className="security-grid">
@@ -368,8 +355,6 @@ const Dashboard = () => {
               </div>
             </div>
           </div>
-
-          {/* Quick Actions */}
           <div className="info-card quick-actions">
             <h3><i className="fas fa-bolt"></i> Quick Actions</h3>
             <div className="action-buttons">

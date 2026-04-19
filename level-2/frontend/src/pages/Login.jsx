@@ -25,7 +25,6 @@ const Login = () => {
   return (
     <div className="auth-page">
       <div className="auth-card">
-        {/* Logo */}
         <div className="auth-logo">
           <i className="fas fa-database"></i>
           <span>Codveda</span>
@@ -34,8 +33,6 @@ const Login = () => {
 
         <h1 className="auth-title">Welcome back</h1>
         <p className="auth-subtitle">Sign in to your account to continue</p>
-
-        {/* Error */}
         {error && (
           <div style={{ background: 'rgba(239,68,68,.1)', border: '1px solid rgba(239,68,68,.25)', borderRadius: 'var(--radius-md)', padding: '12px 16px', marginBottom: 'var(--spacing-lg)', display: 'flex', alignItems: 'center', gap: 10, fontSize: 13, color: '#f87171' }}>
             <i className="fas fa-exclamation-circle"></i> {error}
@@ -100,8 +97,6 @@ const Login = () => {
             )}
           </button>
         </form>
-
-        {/* Hint */}
         <div style={{ marginTop: 'var(--spacing-xl)', padding: '12px 16px', background: 'rgba(124,58,237,.08)', border: '1px solid rgba(124,58,237,.2)', borderRadius: 'var(--radius-md)', fontSize: 12, color: 'var(--text-muted)' }}>
           <i className="fas fa-info-circle" style={{ color: 'var(--primary-light)', marginRight: 6 }}></i>
           Seeded admin: <strong style={{ color: 'var(--primary-light)' }}>admin@codveda.io</strong> / <strong style={{ color: 'var(--primary-light)' }}>Admin@123</strong>

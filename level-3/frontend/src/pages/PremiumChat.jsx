@@ -199,7 +199,6 @@ const PremiumChat = () => {
 
   return (
     <div className="premium-chat-container">
-      {/* Header */}
       <div className="chat-header">
         <h1>
           <div className="logo-icon">💬</div>
@@ -212,7 +211,6 @@ const PremiumChat = () => {
       </div>
 
       <div className="chat-content">
-        {/* Conversations Sidebar */}
         <div className="conversations-sidebar">
           <div className="sidebar-header">
             <h2>Messages</h2>
@@ -265,12 +263,9 @@ const PremiumChat = () => {
             )}
           </div>
         </div>
-
-        {/* Chat Area */}
         <div className="chat-area">
           {selectedUser ? (
             <>
-              {/* Chat Header Bar */}
               <div className="chat-header-bar">
                 <div className="chat-user-info">
                   <div className="chat-user-avatar">
@@ -293,8 +288,6 @@ const PremiumChat = () => {
                   </button>
                 </div>
               </div>
-
-              {/* Messages Container */}
               <div className="messages-container">
                 {messages.length === 0 ? (
                   <div className="empty-state">
@@ -348,8 +341,6 @@ const PremiumChat = () => {
                         </div>
                       )
                     })}
-                    
-                    {/* Typing Indicator */}
                     {userTyping === selectedUser._id && (
                       <div className="message received">
                         <div className="message-avatar">
@@ -366,8 +357,6 @@ const PremiumChat = () => {
                 )}
                 <div ref={messagesEndRef} />
               </div>
-
-              {/* Message Input */}
               <div className="message-input-container">
                 <form onSubmit={handleSendMessage}>
                   <div className="input-wrapper">

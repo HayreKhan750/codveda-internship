@@ -71,8 +71,6 @@ const Users = () => {
 
   return (
     <div style={{ padding: 'var(--spacing-xl)', maxWidth: 1200, margin: '0 auto', animation: 'fadeInUp 0.6s ease' }}>
-      
-      {/* Action Error Alert */}
       {actionError && (
         <div style={{ 
           background: 'rgba(239, 68, 68, 0.1)', 
@@ -102,8 +100,6 @@ const Users = () => {
           </button>
         </div>
       )}
-
-      {/* Premium Header */}
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: 20, justifyContent: 'space-between', alignItems: 'center', marginBottom: 32 }}>
         <div>
           <h1 style={{ fontSize: 28, fontWeight: 800, margin: '0 0 8px 0', color: 'var(--text-primary)', display: 'flex', alignItems: 'center', gap: 12 }}>
@@ -114,8 +110,6 @@ const Users = () => {
           </h1>
           <p style={{ margin: 0, color: 'var(--text-secondary)', fontSize: 14 }}>Showing {filteredUsers.length} of {users.length} total active workforce members.</p>
         </div>
-
-        {/* Filters */}
         <div style={{ display: 'flex', gap: 16, background: 'var(--bg-secondary)', padding: 12, borderRadius: 16, border: '1px solid var(--glass-border)', boxShadow: 'var(--shadow-sm)' }}>
           <div style={{ position: 'relative' }}>
             <i className="fas fa-search" style={{ position: 'absolute', left: 14, top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)' }}></i>
@@ -151,8 +145,6 @@ const Users = () => {
           </button>
         </div>
       </div>
-
-      {/* Grid */}
       {loading ? (
         <div style={{ padding: '60px 0', textAlign: 'center' }}>
           <div className="spinner" style={{ margin: '0 auto 16px', width: 40, height: 40 }}></div>
@@ -188,11 +180,9 @@ const Users = () => {
               onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-4px)'; e.currentTarget.style.boxShadow = '0 16px 32px rgba(0,0,0,0.2), 0 0 0 1px var(--primary-light)' }}
               onMouseLeave={e => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = 'none'; e.currentTarget.style.borderColor = 'var(--glass-border)' }}
               >
-                {/* Glow bar */}
                 <div style={{ height: 4, width: '100%', background: `linear-gradient(90deg, ${deptCfg.color}, transparent)` }}></div>
                 
                 <div style={{ padding: 24 }}>
-                  {/* Header info */}
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 20 }}>
                     <div style={{ display: 'flex', gap: 16 }}>
                       <div style={{ position: 'relative' }}>
@@ -206,7 +196,6 @@ const Users = () => {
                         <p style={{ margin: 0, fontSize: 12, color: 'var(--text-muted)' }}>{u.email}</p>
                       </div>
                     </div>
-                    {/* Badge */}
                     <span style={{ 
                       padding: '4px 10px', borderRadius: 12, fontSize: 11, fontWeight: 700, textTransform: 'uppercase', letterSpacing: 0.5,
                       background: u.role === 'admin' ? 'rgba(124,58,237,0.15)' : 'rgba(255,255,255,0.05)', 
@@ -214,8 +203,6 @@ const Users = () => {
                       boxShadow: u.role === 'admin' ? 'inset 0 0 0 1px rgba(124,58,237,0.3)' : 'none'
                     }}>{u.role}</span>
                   </div>
-
-                  {/* Body Tags */}
                   <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginBottom: 24 }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '6px 12px', background: deptCfg.bg, color: deptCfg.color, borderRadius: 8, fontSize: 12, fontWeight: 600 }}>
                       <i className={`fas ${deptCfg.icon}`}></i>
@@ -232,11 +219,7 @@ const Users = () => {
                       {new Date(u.createdAt).toLocaleDateString(undefined, { month: 'short', year: 'numeric' })}
                     </div>
                   </div>
-
-                  {/* Divider */}
                   <div style={{ height: 1, background: 'var(--glass-border)', marginBottom: 16 }}></div>
-
-                  {/* Actions */}
                   <div style={{ display: 'flex', gap: 12 }}>
                     {u.role === 'admin' ? (
                       <button 
@@ -273,8 +256,6 @@ const Users = () => {
           })}
         </div>
       )}
-
-      {/* Premium Confirm Modal via Component */}
       <ConfirmModal 
         isOpen={confirmModal.isOpen}
         type={confirmModal.type}

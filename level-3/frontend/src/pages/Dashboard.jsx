@@ -28,8 +28,6 @@ const Dashboard = () => {
 
   return (
     <div style={{ padding: 'var(--spacing-xl)', maxWidth: 1200, margin: '0 auto', animation: 'fadeInUp 0.6s ease' }}>
-      
-      {/* Premium Hero Section */}
       <div style={{
         background: 'linear-gradient(135deg, rgba(124,58,237,0.1), rgba(124,58,237,0.02))',
         border: '1px solid var(--glass-border)',
@@ -43,7 +41,6 @@ const Dashboard = () => {
         overflow: 'hidden',
         boxShadow: '0 8px 32px rgba(0,0,0,0.1)'
       }}>
-        {/* Glow effect behind hero */}
         <div style={{ position: 'absolute', top: '-50%', right: '-10%', width: 300, height: 300, background: 'var(--primary)', filter: 'blur(100px)', opacity: 0.2, borderRadius: '50%' }}></div>
         
         <div style={{ zIndex: 1 }}>
@@ -73,7 +70,6 @@ const Dashboard = () => {
 
       {isAdmin ? (
         <>
-          {/* Glassmorphism Stats Grid */}
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 'var(--spacing-lg)', marginBottom: 'var(--spacing-2xl)' }}>
             {[
               { label: 'Total Users', value: stats?.totalUsers ?? 0, icon: 'fa-users', color: '#7c3aed', bg: 'rgba(124,58,237,0.1)' },
@@ -94,7 +90,6 @@ const Dashboard = () => {
           </div>
 
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))', gap: 'var(--spacing-xl)' }}>
-            {/* Department breakdown */}
             <div style={{ background: 'var(--bg-secondary)', border: '1px solid var(--glass-border)', borderRadius: 'var(--radius-lg)', padding: 'var(--spacing-xl)' }}>
               <h3 style={{ fontSize: 18, fontWeight: 700, margin: '0 0 24px 0', display: 'flex', alignItems: 'center', gap: 10, color: 'var(--text-primary)' }}>
                 <div style={{ width: 32, height: 32, borderRadius: 8, background: 'rgba(124,58,237,0.1)', color: 'var(--primary-light)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><i className="fas fa-chart-bar"></i></div>
@@ -115,8 +110,6 @@ const Dashboard = () => {
                 </div>
               ))}
             </div>
-
-            {/* Recent users */}
             <div style={{ background: 'var(--bg-secondary)', border: '1px solid var(--glass-border)', borderRadius: 'var(--radius-lg)', padding: 'var(--spacing-xl)' }}>
               <h3 style={{ fontSize: 18, fontWeight: 700, margin: '0 0 24px 0', display: 'flex', alignItems: 'center', gap: 10, color: 'var(--text-primary)' }}>
                 <div style={{ width: 32, height: 32, borderRadius: 8, background: 'rgba(16,185,129,0.1)', color: 'var(--accent)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><i className="fas fa-user-plus"></i></div>

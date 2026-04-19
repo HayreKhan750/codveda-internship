@@ -167,7 +167,6 @@ const Users = () => {
 
   return (
     <div className="users-page">
-      {/* Filters */}
       <div className="filters-bar">
         <div className="search-box">
           <i className="fas fa-search"></i>
@@ -197,13 +196,9 @@ const Users = () => {
           Refresh
         </button>
       </div>
-
-      {/* Results count */}
       <p className="results-count">
         Showing {users.length} of {pagination.total} users
       </p>
-
-      {/* Users Grid */}
       {loading ? (
         <div className="users-loading">
           <div className="spinner"></div>
@@ -277,8 +272,6 @@ const Users = () => {
           ))}
         </div>
       )}
-
-      {/* Pagination */}
       {pagination.pages > 1 && (
         <div className="pagination">
           <button
@@ -300,8 +293,6 @@ const Users = () => {
           </button>
         </div>
       )}
-
-      {/* Custom Delete Confirmation Modal */}
       {showDeleteModal && (
         <div className="modal-overlay" onClick={cancelDelete}>
           <div className="modal-dialog" onClick={(e) => e.stopPropagation()}>
@@ -336,8 +327,6 @@ const Users = () => {
           </div>
         </div>
       )}
-
-      {/* Edit User Modal */}
       {showEditModal && (
         <div className="modal-overlay" onClick={cancelEdit}>
           <div className="modal-dialog edit-dialog" onClick={(e) => e.stopPropagation()}>

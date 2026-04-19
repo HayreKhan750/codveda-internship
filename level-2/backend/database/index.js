@@ -3,7 +3,6 @@ require('dotenv').config();
 
 let sequelize;
 
-// Determine which database to use based on environment variable
 const dbType = process.env.DB_TYPE || 'postgres'; // default to postgres
 
 switch (dbType) {
@@ -47,12 +46,10 @@ switch (dbType) {
     throw new Error(`Unsupported database type: ${dbType}`);
 }
 
-// Initialize models
 const db = {};
 
 db.sequelize = sequelize;
 
-// Import models
 const fs = require('fs');
 const path = require('path');
 
@@ -64,7 +61,6 @@ fs.readdirSync(modelsPath)
     db[model.name] = model;
   });
 
-// Associate models (if any associations exist)
 Object.keys(db).forEach(modelName => {
   if (db[modelName].associate) {
     db[modelName].associate(db);

@@ -1,5 +1,3 @@
-// DEMO MODE: In-memory storage (no MongoDB required)
-// For production, use MongoDB version (server.js)
 
 const express = require('express');
 const cors = require('cors');
@@ -11,7 +9,6 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 const JWT_SECRET = process.env.JWT_SECRET || 'demo-secret-key';
 
-// In-memory storage
 let users = [
   {
     _id: '1',
@@ -49,11 +46,9 @@ let users = [
 ];
 let nextId = 4;
 
-// Middleware
 app.use(cors());
 app.use(express.json());
 
-// Auth middleware
 const protect = async (req, res, next) => {
   try {
     const token = req.headers.authorization?.split(' ')[1];
@@ -79,10 +74,8 @@ const adminOnly = (req, res, next) => {
   }
 };
 
-// Generate token
 const generateToken = (id) => jwt.sign({ id }, JWT_SECRET, { expiresIn: '30d' });
 
-// Auth Routes
 app.post('/api/auth/register', async (req, res) => {
   try {
     const { name, email, password, age, department } = req.body;
@@ -162,7 +155,6 @@ app.put('/api/auth/update-profile', protect, async (req, res) => {
   });
 });
 
-// User Routes (Admin only)
 app.get('/api/users', protect, adminOnly, (req, res) => {
   const activeUsers = users
     .filter(u => u.isActive)
@@ -204,7 +196,6 @@ app.delete('/api/users/:id', protect, adminOnly, (req, res) => {
   res.json({ success: true, message: 'User deleted' });
 });
 
-// Health check
 app.get('/api/health', (req, res) => {
   res.json({
     status: 'OK',

@@ -32,8 +32,8 @@ app.use(compression());
 app.use(morgan('combined'));
 
 const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100 // limit each IP to 100 requests per windowMs
+  windowMs: 15 * 60 * 1000,
+  max: 100
 });
 app.use('/api/', limiter);
 
@@ -43,7 +43,7 @@ app.use(express.urlencoded({ extended: true }));
 
 const connectDB = async () => {
   try {
-    const conn = await mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/codveda_level2');
+    const conn = await mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/codveda_level3');
     console.log(`MongoDB Connected: ${conn.connection.host}`);
   } catch (error) {
     console.error(`Error: ${error.message}`);
@@ -80,7 +80,7 @@ io.on('connection', (socket) => {
     socket.join(`user-${userId}`);
     connectedUsers.set(socket.id, userId);
     console.log(`User ${userId} joined their room`);
-    
+
     try {
       await User.findByIdAndUpdate(userId, { isOnline: true });
       socket.broadcast.emit('user-status-update', {
