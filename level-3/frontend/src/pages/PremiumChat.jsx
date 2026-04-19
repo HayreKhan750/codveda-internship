@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 import { useAuth } from '../contexts/AuthContext'
 import axios from 'axios'
 import socketService from '../services/socketService'
+import ConfirmModal from '../components/ConfirmModal'
 import './PremiumChat.css'
 
 const PremiumChat = () => {
@@ -16,6 +17,8 @@ const PremiumChat = () => {
   const [userTyping, setUserTyping] = useState(null)
   const [editingMessage, setEditingMessage] = useState(null)
   const [editContent, setEditContent] = useState('')
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false)
+  const [messageToDelete, setMessageToDelete] = useState(null)
   const messagesEndRef = useRef(null)
   const typingTimeoutRef = useRef(null)
   
@@ -172,9 +175,21 @@ const PremiumChat = () => {
   }
 
   const handleDelete = (messageId) => {
-    if (window.confirm('Are you sure you want to delete this message?')) {
-      setMessages(prev => prev.filter(msg => msg.id !== messageId))
+    setMessageToDelete(messageId)
+    setDeleteModalOpen(true)
+  }
+
+  const confirmDelete = () => {
+    if (messageToDelete) {
+      setMessages(prev => prev.filter(msg => msg.id !== messageToDelete))
     }
+    setDeleteModalOpen(false)
+    setMessageToDelete(null)
+  }
+
+  const cancelDelete = () => {
+    setDeleteModalOpen(false)
+    setMessageToDelete(null)
   }
 
   const handleCopy = (content) => {
@@ -494,16 +509,19 @@ const PremiumChat = () => {
                   </div>
                 </form>
               </div>
-            </>
-          ) : (
-            <div className="empty-state">
-              <div className="empty-state-icon">💬</div>
-              <h3>Welcome to ProChat</h3>
-              <p>Select a conversation to start messaging</p>
             </div>
-          )}
+          </div>
         </div>
-      </div>
+      )}
+      <ConfirmModal
+        isOpen={deleteModalOpen}
+        title="Delete Message"
+        message="Are you sure you want to delete this message? This action cannot be undone."
+        onConfirm={confirmDelete}
+        onCancel={cancelDelete}
+        confirmText="Delete"
+        type="danger"
+      />
     </div>
   )
 }

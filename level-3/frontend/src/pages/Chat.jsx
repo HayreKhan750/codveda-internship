@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 import { useQuery, useMutation, useSubscription } from '@apollo/client'
 import { useAuth } from '../contexts/AuthContext'
 import socketService from '../services/socketService'
+import ConfirmModal from '../components/ConfirmModal'
 import {
   GET_USERS, GET_MESSAGES, SEND_MESSAGE, MARK_AS_READ, MESSAGE_SENT, UPDATE_MESSAGE, DELETE_MESSAGE
 } from '../graphql/operations'
@@ -13,6 +14,8 @@ const Chat = () => {
   const [search, setSearch] = useState('')
   const [editingMessage, setEditingMessage] = useState(null)
   const [editContent, setEditContent] = useState('')
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false)
+  const [messageToDelete, setMessageToDelete] = useState(null)
   const messagesEndRef = useRef(null)
 
   const { data: usersData, loading: usersLoading, refetch: refetchUsers } = useQuery(GET_USERS)
@@ -114,9 +117,21 @@ const Chat = () => {
   }
 
   const handleDelete = (messageId) => {
-    if (window.confirm('Are you sure you want to delete this message?')) {
-      deleteMessage({ variables: { messageId } })
+    setMessageToDelete(messageId)
+    setDeleteModalOpen(true)
+  }
+
+  const confirmDelete = () => {
+    if (messageToDelete) {
+      deleteMessage({ variables: { messageId: messageToDelete } })
     }
+    setDeleteModalOpen(false)
+    setMessageToDelete(null)
+  }
+
+  const cancelDelete = () => {
+    setDeleteModalOpen(false)
+    setMessageToDelete(null)
   }
 
   const handleCopy = (content) => {
@@ -382,6 +397,15 @@ const Chat = () => {
           </form>
         </div>
       )}
+      <ConfirmModal
+        isOpen={deleteModalOpen}
+        title="Delete Message"
+        message="Are you sure you want to delete this message? This action cannot be undone."
+        onConfirm={confirmDelete}
+        onCancel={cancelDelete}
+        confirmText="Delete"
+        type="danger"
+      />
     </div>
   )
 }
