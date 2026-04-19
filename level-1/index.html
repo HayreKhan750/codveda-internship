@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Codveda Level-1: Professional User Management System with MongoDB persistent storage, full CRUD operations, search, filtering, and bulk import.">
+    <title>Codveda Level-1 | User Management System</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="app-container">
+
+        <!-- Navigation -->
+        <nav class="navbar">
+            <div class="nav-brand">
+                <div class="logo">
+                    <i class="fas fa-database"></i>
+                    <span>Codveda</span>
+                </div>
+                <div class="badge">Level 1</div>
+            </div>
+            <div class="nav-controls">
+                <button class="theme-toggle" id="themeToggle" title="Toggle Dark/Light Mode">
+                    <i class="fas fa-sun"></i>
+                </button>
+                <button class="nav-button" id="exportBtn" title="Export Current Page as JSON">
+                    <i class="fas fa-download"></i>
+                </button>
+                <button class="nav-button" id="statsBtn" title="Toggle Statistics Dashboard">
+                    <i class="fas fa-chart-bar"></i>
+                </button>
+            </div>
+        </nav>
+
+        <!-- Hero -->
+        <header class="hero">
+            <div class="hero-content">
+                <h1 class="hero-title">
+                    <span class="gradient-text">User Management</span>
+                    <span class="subtitle">MongoDB Powered</span>
+                </h1>
+                <p class="hero-description">
+                    Full-stack REST API with persistent MongoDB storage — create, search, filter, and manage users with real-time data.
+                </p>
+                <div class="tech-stack">
+                    <span class="tech-badge">Node.js</span>
+                    <span class="tech-badge">Express</span>
+                    <span class="tech-badge">MongoDB</span>
+                    <span class="tech-badge">Mongoose</span>
+                    <span class="tech-badge">REST API</span>
+                </div>
+            </div>
+            <div class="hero-visual">
+                <div class="floating-card">
+                    <div class="card-header">
+                        <div class="card-dots"><span></span><span></span><span></span></div>
+                    </div>
+                    <div class="card-content">
+                        <div class="mini-stat">
+                            <i class="fas fa-users"></i>
+                            <span id="userCount">0</span>
+                            <small>Total Users</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Stats Dashboard -->
+        <section class="stats-dashboard" id="statsDashboard">
+            <div class="stat-card">
+                <div class="stat-icon"><i class="fas fa-users"></i></div>
+                <div class="stat-info"><h3 id="totalUsers">0</h3><p>Total Users</p></div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon"><i class="fas fa-user-plus"></i></div>
+                <div class="stat-info"><h3 id="recentUsers">0</h3><p>Added Today</p></div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon"><i class="fas fa-chart-line"></i></div>
+                <div class="stat-info"><h3 id="avgAge">0</h3><p>Average Age</p></div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon"><i class="fas fa-clock"></i></div>
+                <div class="stat-info"><h3 id="lastUpdate">--:--</h3><p>Last Refresh</p></div>
+            </div>
+        </section>
+
+        <!-- Main Content -->
+        <main class="content-grid">
+
+            <!-- Form Section -->
+            <section class="form-section">
+                <div class="section-header">
+                    <h2><i class="fas fa-user-plus"></i> User Management</h2>
+                    <div class="form-mode-toggle">
+                        <button class="mode-btn active" data-mode="create">Create</button>
+                        <button class="mode-btn" data-mode="bulk">Bulk Import</button>
+                    </div>
+                </div>
+
+                <!-- Create Form -->
+                <div id="createFormContainer">
+                    <form id="userForm" class="modern-form">
+                        <input type="hidden" id="userId">
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="name"><i class="fas fa-user"></i> Full Name</label>
+                                <input type="text" id="name" required placeholder="Enter full name" autocomplete="off">
+                                <span class="input-helper">Required — 2 to 100 characters</span>
+                            </div>
+                            <div class="form-group">
+                                <label for="email"><i class="fas fa-envelope"></i> Email</label>
+                                <input type="email" id="email" required placeholder="user@example.com" autocomplete="off">
+                                <span class="input-helper">Must be a valid, unique email</span>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="age"><i class="fas fa-calendar"></i> Age</label>
+                                <input type="number" id="age" min="1" max="120" placeholder="25">
+                                <span class="input-helper">Optional (1–120)</span>
+                            </div>
+                            <div class="form-group">
+                                <label for="department"><i class="fas fa-building"></i> Department</label>
+                                <select id="department">
+                                    <option value="">Select Department</option>
+                                    <option value="engineering">Engineering</option>
+                                    <option value="design">Design</option>
+                                    <option value="marketing">Marketing</option>
+                                    <option value="sales">Sales</option>
+                                    <option value="hr">Human Resources</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="submit" class="btn-primary" id="submitBtn">
+                                <i class="fas fa-plus"></i> Add User
+                            </button>
+                            <button type="button" class="btn-secondary" id="cancelBtn" style="display:none;">
+                                <i class="fas fa-times"></i> Cancel
+                            </button>
+                            <button type="button" class="btn-tertiary" id="resetBtn">
+                                <i class="fas fa-redo"></i> Reset
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Bulk Import Drop Zone -->
+                <div class="drop-zone" id="dropZone">
+                    <i class="fas fa-cloud-upload-alt"></i>
+                    <p>Drag &amp; drop a <strong>JSON file</strong> here</p>
+                    <small>or click to browse — supports arrays of user objects</small>
+                    <small style="margin-top:4px; color: var(--text-muted);">
+                        Format: <code>[{"name":"…","email":"…","age":25,"department":"engineering"}]</code>
+                    </small>
+                </div>
+                <input type="file" id="fileInput" accept=".json" style="display:none;">
+            </section>
+
+            <!-- Users Section -->
+            <section class="users-section">
+                <div class="section-header">
+                    <h2><i class="fas fa-users"></i> User Directory</h2>
+                    <div class="list-controls">
+                        <div class="search-box">
+                            <i class="fas fa-search"></i>
+                            <input type="text" id="searchInput" placeholder="Search by name or email… (Ctrl+K)">
+                        </div>
+                        <div class="filter-controls">
+                            <select id="departmentFilter">
+                                <option value="">All Departments</option>
+                                <option value="engineering">Engineering</option>
+                                <option value="design">Design</option>
+                                <option value="marketing">Marketing</option>
+                                <option value="sales">Sales</option>
+                                <option value="hr">Human Resources</option>
+                            </select>
+                            <button class="btn-icon" id="refreshBtn" title="Refresh">
+                                <i class="fas fa-sync-alt"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <p class="results-count" id="resultsCount">Loading users…</p>
+
+                <div class="users-container">
+                    <div class="loading-overlay" id="loadingOverlay">
+                        <div class="spinner"></div>
+                        <p>Loading users…</p>
+                    </div>
+                    <div id="usersContainer" class="users-grid-modern"></div>
+                    <div class="empty-state" id="emptyState" style="display:none;">
+                        <i class="fas fa-users-slash"></i>
+                        <h3>No Users Found</h3>
+                        <p>Add your first user or adjust your search filters.</p>
+                    </div>
+                </div>
+
+                <div class="pagination-container" id="paginationContainer"></div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="footer-content">
+                <div class="footer-info">
+                    <p>&copy; 2025 Codveda Internship Program — Level 1</p>
+                    <p>Node.js · Express · MongoDB · Mongoose · Vanilla JS</p>
+                </div>
+                <div class="footer-links">
+                    <a href="#" class="footer-link">Documentation</a>
+                    <a href="http://localhost:3003/api/health" target="_blank" class="footer-link">API Health</a>
+                    <a href="http://localhost:3003/" target="_blank" class="footer-link">API Reference</a>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <div class="toast-container" id="toastContainer"></div>
+    <script src="script.js"></script>
+</body>
+</html>
