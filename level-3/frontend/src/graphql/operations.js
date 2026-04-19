@@ -96,6 +96,31 @@ export const SEND_MESSAGE = gql`
   }
 `
 
+export const UPDATE_MESSAGE = gql`
+  mutation UpdateMessage($messageId: ID!, $content: String!) {
+    updateMessage(messageId: $messageId, content: $content) {
+      id
+      content
+      sender {
+        id
+        name
+      }
+      recipient {
+        id
+        name
+      }
+      isRead
+      createdAt
+    }
+  }
+`
+
+export const DELETE_MESSAGE = gql`
+  mutation DeleteMessage($messageId: ID!) {
+    deleteMessage(messageId: $messageId)
+  }
+`
+
 export const MARK_AS_READ = gql`
   mutation MarkAsRead($messageId: ID!) {
     markAsRead(messageId: $messageId) {

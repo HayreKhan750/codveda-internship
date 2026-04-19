@@ -68,6 +68,8 @@ const typeDefs = gql`
     login(email: String!, password: String!): AuthPayload!
     updateProfile(name: String, age: Int, department: String): User!
     sendMessage(recipientId: ID!, content: String!): Message!
+    updateMessage(messageId: ID!, content: String!): Message!
+    deleteMessage(messageId: ID!): Boolean!
     markAsRead(messageId: ID!): Message!
     markNotificationsRead: Boolean
     createNotification(userId: ID!, type: String!, title: String!, message: String!): Notification!

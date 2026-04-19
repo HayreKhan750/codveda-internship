@@ -3,7 +3,7 @@ import { useQuery, useMutation, useSubscription } from '@apollo/client'
 import { useAuth } from '../contexts/AuthContext'
 import socketService from '../services/socketService'
 import {
-  GET_USERS, GET_MESSAGES, SEND_MESSAGE, MARK_AS_READ, MESSAGE_SENT
+  GET_USERS, GET_MESSAGES, SEND_MESSAGE, MARK_AS_READ, MESSAGE_SENT, UPDATE_MESSAGE, DELETE_MESSAGE
 } from '../graphql/operations'
 
 const Chat = () => {
@@ -11,6 +11,8 @@ const Chat = () => {
   const [selectedUser, setSelectedUser] = useState(null)
   const [input, setInput] = useState('')
   const [search, setSearch] = useState('')
+  const [editingMessage, setEditingMessage] = useState(null)
+  const [editContent, setEditContent] = useState('')
   const messagesEndRef = useRef(null)
 
   const { data: usersData, loading: usersLoading, refetch: refetchUsers } = useQuery(GET_USERS)
@@ -24,6 +26,20 @@ const Chat = () => {
   const [sendMessage, { loading: sending }] = useMutation(SEND_MESSAGE, {
     onCompleted: () => {
       setInput('')
+      refetch()
+    },
+  })
+
+  const [updateMessage, { loading: updating }] = useMutation(UPDATE_MESSAGE, {
+    onCompleted: () => {
+      setEditingMessage(null)
+      setEditContent('')
+      refetch()
+    },
+  })
+
+  const [deleteMessage] = useMutation(DELETE_MESSAGE, {
+    onCompleted: () => {
       refetch()
     },
   })
@@ -79,6 +95,32 @@ const Chat = () => {
 
   const handleKeyDown = (e) => {
     if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); handleSend(e) }
+  }
+
+  const handleEdit = (msg) => {
+    setEditingMessage(msg.id)
+    setEditContent(msg.content)
+  }
+
+  const handleCancelEdit = () => {
+    setEditingMessage(null)
+    setEditContent('')
+  }
+
+  const handleSaveEdit = (e) => {
+    e.preventDefault()
+    if (!editContent.trim() || !editingMessage) return
+    updateMessage({ variables: { messageId: editingMessage, content: editContent.trim() } })
+  }
+
+  const handleDelete = (messageId) => {
+    if (window.confirm('Are you sure you want to delete this message?')) {
+      deleteMessage({ variables: { messageId } })
+    }
+  }
+
+  const handleCopy = (content) => {
+    navigator.clipboard.writeText(content)
   }
 
   const allUsers = (usersData?.users || []).filter(u => u.id !== user?.id)
@@ -214,21 +256,98 @@ const Chat = () => {
                   const currentUserId = user?.id || user?._id
                   const senderId = msg.sender.id || msg.sender._id
                   const isMine = String(senderId) === String(currentUserId)
+                  const isEditing = editingMessage === msg.id
                   return (
                     <div key={msg.id} style={{ display: 'flex', flexDirection: isMine ? 'row-reverse' : 'row', marginBottom: 6, width: '100%' }}>
                       <div className="avatar" style={{ width: 30, height: 30, fontSize: 11, marginRight: isMine ? 0 : 8, marginLeft: isMine ? 8 : 0, flexShrink: 0, alignSelf: 'flex-end', visibility: 'visible' }}>{initials(isMine ? user?.name : msg.sender.name)}</div>
                       <div style={{ maxWidth: '65%', marginLeft: isMine ? 'auto' : 0, marginRight: isMine ? 0 : 'auto' }}>
-                        <div style={{
-                          background: isMine ? 'linear-gradient(135deg, var(--primary), var(--primary-dark))' : 'var(--bg-secondary)',
-                          color: isMine ? 'white' : 'var(--text-primary)',
-                          padding: '10px 14px',
-                          borderRadius: isMine ? '18px 18px 4px 18px' : '18px 18px 18px 4px',
-                          fontSize: 14, lineHeight: 1.5,
-                          boxShadow: isMine ? '0 4px 16px rgba(124,58,237,.3)' : 'var(--shadow-sm)',
-                          border: isMine ? 'none' : '1px solid var(--glass-border)',
-                        }}>
-                          {msg.content}
-                        </div>
+                        {isEditing ? (
+                          <form onSubmit={handleSaveEdit} style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+                            <input
+                              value={editContent}
+                              onChange={e => setEditContent(e.target.value)}
+                              autoFocus
+                              style={{
+                                background: 'var(--bg-tertiary)',
+                                border: '1px solid var(--border)',
+                                borderRadius: 'var(--radius-md)',
+                                padding: '10px 14px',
+                                fontSize: 14,
+                                fontFamily: 'inherit',
+                                color: 'var(--text-primary)',
+                                outline: 'none',
+                                width: '100%'
+                              }}
+                              onKeyDown={e => { if (e.key === 'Escape') handleCancelEdit() }}
+                            />
+                            <div style={{ display: 'flex', gap: 8, justifyContent: isMine ? 'flex-end' : 'flex-start' }}>
+                              <button
+                                type="button"
+                                onClick={handleCancelEdit}
+                                style={{ padding: '6px 12px', fontSize: 12, borderRadius: 'var(--radius-sm)', border: '1px solid var(--border)', background: 'var(--bg-secondary)', color: 'var(--text-primary)', cursor: 'pointer' }}
+                              >
+                                Cancel
+                              </button>
+                              <button
+                                type="submit"
+                                disabled={updating || !editContent.trim()}
+                                style={{ padding: '6px 12px', fontSize: 12, borderRadius: 'var(--radius-sm)', border: 'none', background: 'var(--primary)', color: 'white', cursor: 'pointer', opacity: updating || !editContent.trim() ? 0.5 : 1 }}
+                              >
+                                {updating ? 'Saving...' : 'Save'}
+                              </button>
+                            </div>
+                          </form>
+                        ) : (
+                          <div style={{ position: 'relative', group: 'hover' }}>
+                            <div style={{
+                              background: isMine ? 'linear-gradient(135deg, var(--primary), var(--primary-dark))' : 'var(--bg-secondary)',
+                              color: isMine ? 'white' : 'var(--text-primary)',
+                              padding: '10px 14px',
+                              borderRadius: isMine ? '18px 18px 4px 18px' : '18px 18px 18px 4px',
+                              fontSize: 14, lineHeight: 1.5,
+                              boxShadow: isMine ? '0 4px 16px rgba(124,58,237,.3)' : 'var(--shadow-sm)',
+                              border: isMine ? 'none' : '1px solid var(--glass-border)',
+                            }}>
+                              {msg.content}
+                            </div>
+                            <div style={{
+                              position: 'absolute',
+                              top: -8,
+                              right: isMine ? -8 : 'auto',
+                              left: isMine ? 'auto' : -8,
+                              display: 'flex',
+                              gap: 4,
+                              opacity: 0,
+                              transition: 'opacity 0.2s',
+                            }} onMouseEnter={e => e.currentTarget.style.opacity = '1'} onMouseLeave={e => e.currentTarget.style.opacity = '0'}>
+                              <button
+                                onClick={() => handleCopy(msg.content)}
+                                title="Copy"
+                                style={{ width: 24, height: 24, borderRadius: '50%', background: 'var(--bg-secondary)', border: '1px solid var(--border)', color: 'var(--text-muted)', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 10 }}
+                              >
+                                <i className="fas fa-copy"></i>
+                              </button>
+                              {isMine && (
+                                <>
+                                  <button
+                                    onClick={() => handleEdit(msg)}
+                                    title="Edit"
+                                    style={{ width: 24, height: 24, borderRadius: '50%', background: 'var(--bg-secondary)', border: '1px solid var(--border)', color: 'var(--text-muted)', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 10 }}
+                                  >
+                                    <i className="fas fa-edit"></i>
+                                  </button>
+                                  <button
+                                    onClick={() => handleDelete(msg.id)}
+                                    title="Delete"
+                                    style={{ width: 24, height: 24, borderRadius: '50%', background: 'var(--bg-secondary)', border: '1px solid var(--border)', color: '#ef4444', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 10 }}
+                                  >
+                                    <i className="fas fa-trash"></i>
+                                  </button>
+                                </>
+                              )}
+                            </div>
+                          </div>
+                        )}
                         <p style={{ fontSize: 10, color: 'var(--text-muted)', marginTop: 3, textAlign: isMine ? 'right' : 'left', display: 'flex', alignItems: 'center', justifyContent: isMine ? 'flex-end' : 'flex-start', gap: 4 }}>
                           {fmtTime(msg.createdAt)}
                           {isMine && <i className={`fas ${msg.isRead ? 'fa-check-double' : 'fa-check'}`} style={{ fontSize: 10, color: msg.isRead ? 'var(--accent-light)' : 'inherit' }}></i>}

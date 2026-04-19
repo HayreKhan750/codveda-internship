@@ -14,6 +14,8 @@ const PremiumChat = () => {
   const [searchQuery, setSearchQuery] = useState('')
   const [isTyping, setIsTyping] = useState(false)
   const [userTyping, setUserTyping] = useState(null)
+  const [editingMessage, setEditingMessage] = useState(null)
+  const [editContent, setEditContent] = useState('')
   const messagesEndRef = useRef(null)
   const typingTimeoutRef = useRef(null)
   
@@ -147,6 +149,36 @@ const PremiumChat = () => {
     typingTimeoutRef.current = setTimeout(() => {
       setIsTyping(false)
     }, 1000)
+  }
+
+  const handleEdit = (msg) => {
+    setEditingMessage(msg.id)
+    setEditContent(msg.content)
+  }
+
+  const handleCancelEdit = () => {
+    setEditingMessage(null)
+    setEditContent('')
+  }
+
+  const handleSaveEdit = (e) => {
+    e.preventDefault()
+    if (!editContent.trim() || !editingMessage) return
+    setMessages(prev => prev.map(msg => 
+      msg.id === editingMessage ? { ...msg, content: editContent.trim() } : msg
+    ))
+    setEditingMessage(null)
+    setEditContent('')
+  }
+
+  const handleDelete = (messageId) => {
+    if (window.confirm('Are you sure you want to delete this message?')) {
+      setMessages(prev => prev.filter(msg => msg.id !== messageId))
+    }
+  }
+
+  const handleCopy = (content) => {
+    navigator.clipboard.writeText(content)
   }
 
   const formatTimestamp = (timestamp) => {
@@ -301,6 +333,7 @@ const PremiumChat = () => {
                       const isSent = msg.senderId === currentUser._id
                       const showDate = index === 0 || 
                         new Date(msg.timestamp).toDateString() !== new Date(messages[index - 1].timestamp).toDateString()
+                      const isEditing = editingMessage === msg.id
                       
                       return (
                         <div key={msg.id} style={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
@@ -316,21 +349,97 @@ const PremiumChat = () => {
                               </div>
                             )}
                             <div className="message-content">
-                              <div className="message-bubble">
-                                <p>{msg.content}</p>
-                                <div className="message-meta">
-                                  <span className="message-time">
-                                    {formatTimestamp(msg.timestamp)}
-                                  </span>
-                                  {isSent && (
-                                    <div className={`message-status status-${msg.status}`}>
-                                      {msg.status === 'sent' && '✓'}
-                                      {msg.status === 'delivered' && '✓✓'}
-                                      {msg.status === 'read' && '✓✓'}
+                              {isEditing ? (
+                                <form onSubmit={handleSaveEdit} style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+                                  <input
+                                    value={editContent}
+                                    onChange={e => setEditContent(e.target.value)}
+                                    autoFocus
+                                    style={{
+                                      background: 'var(--bg-tertiary)',
+                                      border: '1px solid var(--border)',
+                                      borderRadius: 'var(--radius-md)',
+                                      padding: '10px 14px',
+                                      fontSize: 14,
+                                      fontFamily: 'inherit',
+                                      color: 'var(--text-primary)',
+                                      outline: 'none',
+                                      width: '100%'
+                                    }}
+                                    onKeyDown={e => { if (e.key === 'Escape') handleCancelEdit() }}
+                                  />
+                                  <div style={{ display: 'flex', gap: 8, justifyContent: isSent ? 'flex-end' : 'flex-start' }}>
+                                    <button
+                                      type="button"
+                                      onClick={handleCancelEdit}
+                                      style={{ padding: '6px 12px', fontSize: 12, borderRadius: 'var(--radius-sm)', border: '1px solid var(--border)', background: 'var(--bg-secondary)', color: 'var(--text-primary)', cursor: 'pointer' }}
+                                    >
+                                      Cancel
+                                    </button>
+                                    <button
+                                      type="submit"
+                                      disabled={!editContent.trim()}
+                                      style={{ padding: '6px 12px', fontSize: 12, borderRadius: 'var(--radius-sm)', border: 'none', background: 'var(--primary)', color: 'white', cursor: 'pointer', opacity: !editContent.trim() ? 0.5 : 1 }}
+                                    >
+                                      Save
+                                    </button>
+                                  </div>
+                                </form>
+                              ) : (
+                                <div style={{ position: 'relative' }}>
+                                  <div className="message-bubble">
+                                    <p>{msg.content}</p>
+                                    <div className="message-meta">
+                                      <span className="message-time">
+                                        {formatTimestamp(msg.timestamp)}
+                                      </span>
+                                      {isSent && (
+                                        <div className={`message-status status-${msg.status}`}>
+                                          {msg.status === 'sent' && '✓'}
+                                          {msg.status === 'delivered' && '✓✓'}
+                                          {msg.status === 'read' && '✓✓'}
+                                        </div>
+                                      )}
                                     </div>
-                                  )}
+                                  </div>
+                                  <div style={{
+                                    position: 'absolute',
+                                    top: -8,
+                                    right: isSent ? -8 : 'auto',
+                                    left: isSent ? 'auto' : -8,
+                                    display: 'flex',
+                                    gap: 4,
+                                    opacity: 0,
+                                    transition: 'opacity 0.2s',
+                                  }} onMouseEnter={e => e.currentTarget.style.opacity = '1'} onMouseLeave={e => e.currentTarget.style.opacity = '0'}>
+                                    <button
+                                      onClick={() => handleCopy(msg.content)}
+                                      title="Copy"
+                                      style={{ width: 24, height: 24, borderRadius: '50%', background: 'var(--bg-secondary)', border: '1px solid var(--border)', color: 'var(--text-muted)', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 10 }}
+                                    >
+                                      <i className="fas fa-copy"></i>
+                                    </button>
+                                    {isSent && (
+                                      <>
+                                        <button
+                                          onClick={() => handleEdit(msg)}
+                                          title="Edit"
+                                          style={{ width: 24, height: 24, borderRadius: '50%', background: 'var(--bg-secondary)', border: '1px solid var(--border)', color: 'var(--text-muted)', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 10 }}
+                                        >
+                                          <i className="fas fa-edit"></i>
+                                        </button>
+                                        <button
+                                          onClick={() => handleDelete(msg.id)}
+                                          title="Delete"
+                                          style={{ width: 24, height: 24, borderRadius: '50%', background: 'var(--bg-secondary)', border: '1px solid var(--border)', color: '#ef4444', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 10 }}
+                                        >
+                                          <i className="fas fa-trash"></i>
+                                        </button>
+                                      </>
+                                    )}
+                                  </div>
                                 </div>
-                              </div>
+                              )}
                             </div>
                             {isSent && (
                               <div className="message-avatar">
